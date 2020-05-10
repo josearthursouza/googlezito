@@ -26,22 +26,23 @@ class busca{
 		Node *pRoot;
 		
 	public:
-		void inserir(string word){
-			Node* pNode=pRoot;
-			int ies= 0;
-			if(pesquisar(word, pNode, ies)){
+		void inserir(string word){ //vamos inserir uma palavra
+			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
+			int ies= 0; //numero que indicará quantas letras da palavra já existem
+			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				return;
 			}
-			else{
-				for(int i=ies; i< word.length(); i++){
+			else{ //caso a palavra n exista por completo
+				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
 					//pNode->pchild [int(word[i]) - 97] = new Node(word[i]);
-					Node* &newNode = pNode->pchild[int(word[i]) - 97];
-					newNode = new Node(word[i]);
+					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
+					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					//newNode->data=word[i];
-					newNode->pP=pNode;
+					newNode->pP=pNode; //criamos o pai dele
+					pNode=newNode; //e vamos pro próximo node
 					
 				}
-				//aqui ainda tem q mudar o bool da palavra pra dizer q acabou
+				pNode->fim=1; //aqui ainda tem q mudar o bool da palavra pra dizer q acabou
 			}
 			
 		} 
