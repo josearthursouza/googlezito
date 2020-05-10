@@ -34,14 +34,14 @@ class busca{
 			}
 			else{
 				for(int i=ies; i< word.length(); i++){
-					//pNode->pchild [int(word[i]) - 97] = new Node;
+					//pNode->pchild [int(word[i]) - 97] = new Node(word[i]);
 					Node* &newNode = pNode->pchild[int(word[i]) - 97];
-					newNode=new Node*;
-					newNode->data=word[i];
+					newNode = new Node(word[i]);
+					//newNode->data=word[i];
 					newNode->pP=pNode;
 					
 				}
-				newNode->fim=1;
+				//aqui ainda tem q mudar o bool da palavra pra dizer q acabou
 			}
 			
 		} 
@@ -54,7 +54,7 @@ class busca{
 			 		pNode = pNode->pchild [int(word[i] - 97)];
 			 		ies++;
 				 } 
-				else(){ //se n, paramos aqui
+				else{ //se n, paramos aqui
 					return false; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 				}
 			 }
@@ -67,13 +67,14 @@ class busca{
 	
 	
 	
-	
 };
 
 int main(){
-	busca();
-	busca.pesquisar("oba", Node* pNode, int ies);
-	busca.inserir("oba");
-	busca.pesquisar("oba", Node* pNode, int ies);
+	busca b;
+	Node* pNode;
+	int ies;
+	if(b.pesquisar("oba", pNode, ies)) cout<<"errou";
+	b.inserir("oba");
+	if(b.pesquisar("oba", pNode, ies)) cout<<"acertou";
 	return 0;
 }
