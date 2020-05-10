@@ -14,8 +14,8 @@ struct Node{
 	Node* pchild[26]; //lista de chars possiveis a seguir
 
 	
-    Node(T x):data(x), fim(0), pR(NULL), pL(NULL){
-	for(i=0;i<26;i++){
+    Node(char x):data(x), fim(0), pP(nullptr){
+	for(int i=0;i<26;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
@@ -27,12 +27,12 @@ class busca{
 		
 	public:
 		void inserir(string word){
-			Node* pNode=new Node;
-			int ies= new int;
+			Node* pNode=pRoot;
+			int ies= 0;
 			if(pesquisar(word, pNode, ies)){
-				return
+				return;
 			}
-			else(){
+			else{
 				for(int i=ies; i< word.length(); i++){
 					//pNode->pchild [int(word[i]) - 97] = new Node;
 					Node* &newNode = pNode->pchild[int(word[i]) - 97];
@@ -71,6 +71,9 @@ class busca{
 };
 
 int main(){
-	
+	busca();
+	busca.pesquisar("oba", Node* pNode, int ies);
+	busca.inserir("oba");
+	busca.pesquisar("oba", Node* pNode, int ies);
 	return 0;
 }
