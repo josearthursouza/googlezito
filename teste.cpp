@@ -53,9 +53,11 @@ class busca{
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0; //numero que indicará quantas letras da palavra já existem
 			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+				cout <<"a palavra já existe" <<endl;
 				return;
 			}
 			else{ //caso a palavra n exista por completo
+				cout<<"a palavra n existe ainda, mas vamos dar um jeito nisso" <<endl;
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
 					//pNode->pchild [int(word[i]) - 97] = new Node(word[i]);
 					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
@@ -79,12 +81,12 @@ class busca{
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					cout <<"false";
+					cout <<"false  ";
 					return false; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 					
 				}
 			 }
-			cout<<"true";
+			cout<<"true  ";
     		return true; //(retorna true pra sabermos q a palabra j[a existe)
     		
 		}
@@ -106,11 +108,11 @@ int main(){
 	//cout<< &(((*pNode)->pchild)[9])->data;
 	
 	b.pesquisar("oba", pNode, ies);
-	//b.inserir("oba");
-	//if(b.pesquisar("oba", pNode, ies)) cout<<"acertou";
+	b.inserir("oba");
+	b.pesquisar("oba", pNode, ies);
 	
-	string a="oba";
-	cout <<a[1] <<"    "<<a[2];
+	//string a="oba";
+	//cout <<a[1] <<"    "<<a[2];
 	
 	delete[] pNode;
 	return 0;
