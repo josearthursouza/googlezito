@@ -86,7 +86,7 @@ class busca{
 					
 				}
 			 }
-			cout<<"true  ";
+			cout<<"true  "<<endl;
     		return true; //(retorna true pra sabermos q a palabra j[a existe)
     		
 		}
