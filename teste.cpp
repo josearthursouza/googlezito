@@ -81,7 +81,7 @@ class busca{
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					cout <<"false  ";
+					cout <<"false  "<<endl;
 					return false; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 					
 				}
