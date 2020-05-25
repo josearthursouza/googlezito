@@ -7,20 +7,25 @@ using std::endl;
 using std::string;
 using std::getline;
 
+#include<vector>
+using namespace std; 
+
 struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
     Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
 	Node* pchild[26]; //lista de chars possiveis a seguir
+	vector<int> vec;
+	int len_id;
 
 	
-    Node(char x):data(x), fim(0), pP(nullptr){
+    Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
 	
-	Node(): fim(0), pP(nullptr){
+	Node(): fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
@@ -49,11 +54,14 @@ class busca{
 			
 		//}
 		
-		void inserir(string word){ //vamos inserir uma palavra
+		
+		
+		void inserir(string word, int id){ //vamos inserir uma palavra
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0; //numero que indicará quantas letras da palavra já existem
 			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				cout <<"a palavra já existe" <<endl;
+				inserir_id(pNode->vec, id, pNode->len_id);
 				return;
 			}
 			else{ //caso a palavra n exista por completo
@@ -67,10 +75,24 @@ class busca{
 					pNode=newNode; //e vamos pro próximo node
 					
 				}
+				//pNode->id.push_back(idd);
+				//pNode->len_id++;
+				inserir_id(pNode->vec, id, pNode->len_id);
 				pNode->fim=1; //aqui ainda tem q mudar o bool da palavra pra dizer q acabou
 			}
 			
 		} 
+		
+		void inserir_id(vector<int> vec, int id, int len_id){
+			for(int i=0; i<len_id; i++){
+				if(vec.at(i)==id) {
+					return;
+				}
+			}
+			vec.push_back(id);
+			len_id++;
+			return;
+		}
 		
 		bool pesquisar(string word, Node* pNode, int ies){
 			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
@@ -108,11 +130,8 @@ int main(){
 	//cout<< &(((*pNode)->pchild)[9])->data;
 	
 	b.pesquisar("oba", pNode, ies);
-	b.inserir("oba");
+	b.inserir("oba",1);
 	b.pesquisar("oba", pNode, ies);
-	
-	//string a="oba";
-	//cout <<a[1] <<"    "<<a[2];
 	
 	delete[] pNode;
 	return 0;
