@@ -39,60 +39,10 @@ class busca{
 	public:
 		
 	busca(){ //FUTURO CONSTRUTOR
-			//pRoot->fim=0;
-			//for(int i=0;i<25;i++){
-			//	pRoot->pchild[i]=new Node(char(i+97));
-			//}
 			pRoot=new Node();
 		}
 		
 		//~busca(){ //FUTURO DESTRUTOR
-		//	delete[] pRoot;
-			//while(obj->fim!=1){
-				
-			//}
-			
-		//}
-		
-		
-		
-		void inserir(string word, int id){ //vamos inserir uma palavra
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
-			int ies= 0; //numero que indicará quantas letras da palavra já existem
-			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
-				cout <<"a palavra já existe" <<endl;
-				inserir_id(pNode->vec, id, pNode->len_id);
-				return;
-			}
-			else{ //caso a palavra n exista por completo
-				cout<<"a palavra n existe ainda, mas vamos dar um jeito nisso" <<endl;
-				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					//pNode->pchild [int(word[i]) - 97] = new Node(word[i]);
-					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
-					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
-					//newNode->data=word[i];
-					newNode->pP=pNode; //criamos o pai dele
-					pNode=newNode; //e vamos pro próximo node
-					
-				}
-				//pNode->id.push_back(idd);
-				//pNode->len_id++;
-				inserir_id(pNode->vec, id, pNode->len_id);
-				pNode->fim=1; //aqui ainda tem q mudar o bool da palavra pra dizer q acabou
-			}
-			
-		} 
-		
-		void inserir_id(vector<int> vec, int id, int len_id){
-			for(int i=0; i<len_id; i++){
-				if(vec.at(i)==id) {
-					return;
-				}
-			}
-			vec.push_back(id);
-			len_id++;
-			return;
-		}
 		
 		bool pesquisar(string word, Node* pNode, int ies){
 			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
@@ -100,18 +50,63 @@ class busca{
 			for(int i=0; i< word.length(); i++){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
 			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra próxima letra
+			 		cout<<pNode->data <<endl;
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					cout <<"false  "<<endl;
 					return false; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 					
 				}
 			 }
-			cout<<"true  "<<endl;
     		return true; //(retorna true pra sabermos q a palabra j[a existe)
-    		
 		}
+		
+		void inserir(string word, int id){ //vamos inserir uma palavra
+			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
+			int ies= 0; //numero que indicará quantas letras da palavra já existem
+			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+				//cout<< pNode->data <<endl;
+				inserir_id(pNode->vec, id, pNode->len_id);
+				cout<< "---------------" <<endl;
+				return;
+			}
+			else{ //caso a palavra n exista por completo
+				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
+					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
+					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
+					newNode->pP=pNode; //criamos o pai dele
+					pNode=newNode; //e vamos pro próximo node
+					
+				}
+				//cout<< pNode->data <<endl;
+				inserir_id(pNode->vec, id, pNode->len_id);
+				cout<< "---------------" <<endl;
+				pNode->fim=1;
+			}
+			
+		} 
+		
+		void printe(vector<int> g1){
+    		for (auto i = g1.begin(); i != g1.end(); ++i){
+        		cout << *i << " "; 
+    		}
+    		cout<<endl;
+		}
+		
+		void inserir_id(vector<int> & vec, int & id, int & len_id){
+			for(int i=0; i<len_id; i++){
+				if(vec.at(i)==id) {
+					printe(vec);
+					return;
+				}
+			}
+			vec.push_back(id);
+			len_id++;
+			//printe(vec);
+			return;
+		}
+		
+		
 		
 		void compaquitar(){
 			
@@ -125,13 +120,13 @@ int main(){
 	busca b;
 	Node* pNode;
 	int ies;
-	//cout<< int('z')-97;
-	//(((*pNode)->pchild)[9])->data= 'j';
-	//cout<< &(((*pNode)->pchild)[9])->data;
 	
-	b.pesquisar("oba", pNode, ies);
+//	b.pesquisar("oba", pNode, ies);
 	b.inserir("oba",1);
-	b.pesquisar("oba", pNode, ies);
+	b.inserir("oba",2);
+//	b.inserir("oba",1);
+	b.inserir("oba",3);
+//	cout<< b.pesquisar("oba", pNode, ies);
 	
 	delete[] pNode;
 	return 0;
