@@ -44,28 +44,27 @@ class busca{
 		
 		//~busca(){ //FUTURO DESTRUTOR
 		
-		bool pesquisar(string word, Node* pNode, int ies){
+		int pesquisar(string word, Node* & pNode, int & ies){
 			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
 			ies=0; //e este deve ser o número de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
 			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra próxima letra
-			 		cout<<pNode->data <<endl;
+			 		//cout<<pNode->data <<endl;
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					return false; //retorn falso, pois a palavra n existe (pelo mens n inteira)
-					
+					return 0; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 				}
 			 }
-    		return true; //(retorna true pra sabermos q a palabra j[a existe)
+    		return 1; //(retorna true pra sabermos q a palabra j[a existe)
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0; //numero que indicará quantas letras da palavra já existem
-			if(pesquisar(word, pNode, ies)){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
-				//cout<< pNode->data <<endl;
+			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+				cout<< pNode->data <<endl;
 				inserir_id(pNode->vec, id, pNode->len_id);
 				cout<< "---------------" <<endl;
 				return;
@@ -93,20 +92,28 @@ class busca{
     		cout<<endl;
 		}
 		
-		void inserir_id(vector<int> & vec, int & id, int & len_id){
+		void inserir_idd(vector<int> & vec, int & id, int & len_id){
 			for(int i=0; i<len_id; i++){
 				if(vec.at(i)==id) {
+					cout<<"lista de ids: ";
 					printe(vec);
 					return;
 				}
 			}
 			vec.push_back(id);
 			len_id++;
-			//printe(vec);
+			cout<<"lista de ids: "; 
+			printe(vec);
 			return;
 		}
 		
-		
+		void inserir_id(vector<int> & vec, int & id, int & len_id){
+			vec.push_back(id);
+			len_id++;
+			cout<<"lista de ids: "; 
+			printe(vec);
+			return;
+		}
 		
 		void compaquitar(){
 			
@@ -121,11 +128,11 @@ int main(){
 	Node* pNode;
 	int ies;
 	
-//	b.pesquisar("oba", pNode, ies);
-	b.inserir("oba",1);
-	b.inserir("oba",2);
+	b.pesquisar("oba", pNode, ies);
 //	b.inserir("oba",1);
-	b.inserir("oba",3);
+//	b.inserir("oba",2);
+//	b.inserir("oba",1);
+//	b.inserir("oba",3);
 //	cout<< b.pesquisar("oba", pNode, ies);
 	
 	delete[] pNode;
