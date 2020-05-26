@@ -10,6 +10,9 @@ using std::getline;
 #include<vector>
 using namespace std; 
 
+#include <chrono> 
+using namespace std::chrono;
+
 struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
@@ -50,7 +53,6 @@ class busca{
 			for(int i=0; i< word.length(); i++){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
 			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra próxima letra
-			 		//cout<<pNode->data <<endl;
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
@@ -60,13 +62,31 @@ class busca{
     		return 1; //(retorna true pra sabermos q a palabra j[a existe)
 		}
 		
+		void search(){
+			auto start = high_resolution_clock::now();
+			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
+			int ies= 0;
+			string word;
+  			cout << "Digite uma palavra: ";
+  			getline(cin, word);
+  			if(pesquisar(word, pNode, ies)==1){
+  				cout<<"a palavra existe e tem correspondencia nos seguintes artigos: ";
+  				printe(pNode->vec);
+			  }
+			else{
+				cout<<"a palavra não existe na arvore" <<endl;
+			}
+			auto stop = high_resolution_clock::now();
+			auto duration = duration_cast<microseconds>(stop - start);
+			cout<< "a pesquisa foi feita em ";
+			cout << duration.count()*0.000001 <<" segundos" <<endl;
+		}
+		
 		void inserir(string word, int id){ //vamos inserir uma palavra
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0; //numero que indicará quantas letras da palavra já existem
 			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
-				cout<< pNode->data <<endl;
 				inserir_id(pNode->vec, id, pNode->len_id);
-				cout<< "---------------" <<endl;
 				return;
 			}
 			else{ //caso a palavra n exista por completo
@@ -77,9 +97,7 @@ class busca{
 					pNode=newNode; //e vamos pro próximo node
 					
 				}
-				//cout<< pNode->data <<endl;
 				inserir_id(pNode->vec, id, pNode->len_id);
-				cout<< "---------------" <<endl;
 				pNode->fim=1;
 			}
 			
@@ -92,26 +110,20 @@ class busca{
     		cout<<endl;
 		}
 		
-		void inserir_idd(vector<int> & vec, int & id, int & len_id){
+		void inserir_id(vector<int> & vec, int & id, int & len_id){
 			for(int i=0; i<len_id; i++){
 				if(vec.at(i)==id) {
-					cout<<"lista de ids: ";
-					printe(vec);
 					return;
 				}
 			}
 			vec.push_back(id);
 			len_id++;
-			cout<<"lista de ids: "; 
-			printe(vec);
 			return;
 		}
 		
-		void inserir_id(vector<int> & vec, int & id, int & len_id){
+		void inserir_idd(vector<int> & vec, int & id, int & len_id){
 			vec.push_back(id);
 			len_id++;
-			cout<<"lista de ids: "; 
-			printe(vec);
 			return;
 		}
 		
@@ -127,13 +139,11 @@ int main(){
 	busca b;
 	Node* pNode;
 	int ies;
-	
-	b.pesquisar("oba", pNode, ies);
-//	b.inserir("oba",1);
-//	b.inserir("oba",2);
-//	b.inserir("oba",1);
-//	b.inserir("oba",3);
-//	cout<< b.pesquisar("oba", pNode, ies);
+
+	b.inserir("oba",1);
+	b.inserir("oba",2);
+	b.search();
+	b.search();
 	
 	delete[] pNode;
 	return 0;
