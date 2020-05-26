@@ -63,15 +63,15 @@ class busca{
 		}
 		
 		void search(){
-			auto start = high_resolution_clock::now();
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0;
 			string word;
   			cout << "Digite uma palavra: ";
   			getline(cin, word);
+  			auto start = high_resolution_clock::now();
   			if(pesquisar(word, pNode, ies)==1){
-  				cout<<"a palavra existe e tem correspondencia nos seguintes artigos: ";
-  				printe(pNode->vec);
+  				cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
+  				//printe(pNode->vec);
 			  }
 			else{
 				cout<<"a palavra não existe na arvore" <<endl;
@@ -79,7 +79,7 @@ class busca{
 			auto stop = high_resolution_clock::now();
 			auto duration = duration_cast<microseconds>(stop - start);
 			cout<< "a pesquisa foi feita em ";
-			cout << duration.count()*0.000001 <<" segundos" <<endl;
+			cout << duration.count()/1000000 <<" segundos" <<endl;
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
@@ -140,7 +140,7 @@ int main(){
 	Node* pNode;
 	int ies;
 
-	b.inserir("oba",1);
+	b.inserir("correspondencia",1);
 	b.inserir("oba",2);
 	b.search();
 	b.search();
