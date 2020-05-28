@@ -68,27 +68,46 @@ class busca{
 		}
 		
 		void search(){
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
+			Node* pNode=pRoot;
 			int ies= 0;
 			string word;
-  			cout << "Digite uma palavra: ";
-  			getline(cin, word);
-  			auto start = high_resolution_clock::now();
-  			if(pesquisar(word, pNode, ies)==1){
-  				//cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
-  				cout<< "a palavra tem correspondencia em " <<pNode->len_id <<" titulos. Sao estes:" <<endl;
-  				for(int i = 0; i<=pNode->len_id -1 ;i++){
-  					cout << "- "<<titulos[pNode->vec.at(i)] <<endl;
-				  }
-  				//printe(pNode->vec);
-			  }
-			else{
-				cout<<"a palavra não existe na arvore" <<endl;
+			string w;
+			
+			while(true){
+				
+				cout<<"?quieres hacer una pesquisa? (s/n)" <<endl;
+				getline(cin,w);
+				
+				if(w=="s"){
+  					cout << "Digite uma palavra... ";
+	  				getline(cin, word);
+	  				
+  					auto start = high_resolution_clock::now();
+  					
+  					if(pesquisar(word, pNode, ies)==1){
+  						cout<< "achamos a palavra que você quer! "
+						  	<<endl
+							<<"Ela tem correspondencia no(s) seguinte(s) "
+							<<pNode->len_id
+							<<" titulo(s):"
+							<<endl;
+  						for(int i = 0; i<=pNode->len_id -1 ;i++){
+	  						cout << "- " <<i <<"....."<<titulos[pNode->vec.at(i)] <<endl;
+					  	}
+				  	}
+					else{
+						cout<<"a palavra não existe na arvore" <<endl;
+					}
+					auto stop = high_resolution_clock::now();
+					auto duration = duration_cast<microseconds>(stop - start);
+					cout<<endl << "a pesquisa foi feita em ";
+					cout << duration.count()/1000000 <<" segundos... ou " << duration.count() <<" microsegundos :) "<<endl;
+				}
+				
+				else{
+					return;
+				}
 			}
-			auto stop = high_resolution_clock::now();
-			auto duration = duration_cast<microseconds>(stop - start);
-			cout<<endl << "a pesquisa foi feita em ";
-			cout << duration.count()/1000000 <<" segundos... ou " << duration.count() <<" microsegundos :) "<<endl;
 		}
 		
 		void inserir_titulo(string titulo, int id){
