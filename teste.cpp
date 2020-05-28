@@ -1,7 +1,11 @@
+
+
 #include<iostream>
 using std::cout;
 using std::cin;
 using std::endl;
+#include<fstream>
+#include<sstream>
 
 #include<string>
 using std::string;
@@ -16,32 +20,29 @@ using namespace std::chrono;
 struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
-    Node* pP; //ponteiro para o pai; ajudará na busca por palavras semelhantes
-	Node* pchild[26]; //lista de chars possíveis a seguir
-	vector<int> vec; //vetor de ids
-	int len_id; //tamanho do vetor de ids
-	//resto (pra quando implementarmos a funçõa compaquitar
+    Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
+	Node* pchild[26]; //lista de chars possiveis a seguir
+	vector<int> vec;
+	int len_id;
+
 	
-	//CONSTRUTOR DE NODE COM CHAR
     Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
-		pchild[i]=nullptr; //não faremos ponteiro sem precisar
+		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
 	
-	//CONSTRUTOR DE NODE SEM CHAR
 	Node(): fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
-		pchild[i]=nullptr; //não faremos ponteiro sem precisar
+		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
 };
 
-//NOSSA LINDA CLASSE
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[3];
+		string titulos[2];
 		
 	public:
 		
@@ -60,31 +61,38 @@ class busca{
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					return 0; //retorna falso, pois a palavra n existe (pelo menos não inteirinha)
+					return 0; //retorn falso, pois a palavra n existe (pelo mens n inteira)
 				}
 			 }
-    		return 1; //(retorna true pra sabermos q a palabra já existe)
+    		return 1; //(retorna true pra sabermos q a palabra j[a existe)
 		}
 		
 		void search(){
-			Node* pNode=pRoot;
+			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0;
 			string word;
   			cout << "Digite uma palavra: ";
   			getline(cin, word);
   			auto start = high_resolution_clock::now();
   			if(pesquisar(word, pNode, ies)==1){
-  				cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
+  				//cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
+  				cout<< "a palavra tem correspondencia em " <<pNode->len_id <<" titulos. Sao estes:" <<endl;
+  				for(int i = 0; i<=pNode->len_id -1 ;i++){
+  					cout << "- "<<titulos[pNode->vec.at(i)] <<endl;
+				  }
   				//printe(pNode->vec);
 			  }
 			else{
 				cout<<"a palavra não existe na arvore" <<endl;
-				//SUGESTÃO
 			}
 			auto stop = high_resolution_clock::now();
 			auto duration = duration_cast<microseconds>(stop - start);
-			cout<< "a pesquisa foi feita em ";
-			cout << duration.count()/1000000 <<" segundos... ou " <<duration.count() <<" microsegundos!" <<endl;
+			cout<<endl << "a pesquisa foi feita em ";
+			cout << duration.count()/1000000 <<" segundos... ou " << duration.count() <<" microsegundos :) "<<endl;
+		}
+		
+		void inserir_titulo(string titulo, int id){
+			titulos[id]=titulo;
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
@@ -106,11 +114,8 @@ class busca{
 				pNode->fim=1;
 			}
 			
+			
 		} 
-		
-		void inserir_titulo(string titulo, int id){
-			titulos[id-1]=titulo;
-		}
 		
 		void printe(vector<int> g1){
     		for (auto i = g1.begin(); i != g1.end(); ++i){
@@ -145,15 +150,31 @@ class busca{
 };
 
 int main(){
-	busca b;
 	Node* pNode;
 	int ies;
-
-	b.inserir("correspondencia",1);
-	b.inserir("oba",2);
+	string titulos[2];
+	busca b;
+	ifstream dados;
+	dados.open("vai_dar_certo.txt");
+	for(int i=0;i<2;i++){
+		string id;
+		getline(dados,id);
+		string titulo;
+		getline(dados,titulo);
+		titulos[i] = titulo;
+		
+		string palavras;
+		getline(dados,palavras);
+		stringstream split;
+		split << palavras;
+		string word;
+		b.inserir_titulo(titulo, i);
+		while(split >> word){
+			b.inserir(word,i);
+		}
+	}
 	b.search();
-	b.search();
-	
 	delete[] pNode;
 	return 0;
 }
+
