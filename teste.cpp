@@ -16,28 +16,32 @@ using namespace std::chrono;
 struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
-    Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
-	Node* pchild[26]; //lista de chars possiveis a seguir
-	vector<int> vec;
-	int len_id;
-
+    Node* pP; //ponteiro para o pai; ajudará na busca por palavras semelhantes
+	Node* pchild[26]; //lista de chars possíveis a seguir
+	vector<int> vec; //vetor de ids
+	int len_id; //tamanho do vetor de ids
+	//resto (pra quando implementarmos a funçõa compaquitar
 	
+	//CONSTRUTOR DE NODE COM CHAR
     Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
-		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
+		pchild[i]=nullptr; //não faremos ponteiro sem precisar
 	}
 	}
 	
+	//CONSTRUTOR DE NODE SEM CHAR
 	Node(): fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<26;i++){
-		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
+		pchild[i]=nullptr; //não faremos ponteiro sem precisar
 	}
 	}
 };
 
+//NOSSA LINDA CLASSE
 class busca{
 	private:
 		Node *pRoot;
+		string titulos[3];
 		
 	public:
 		
@@ -56,14 +60,14 @@ class busca{
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					return 0; //retorn falso, pois a palavra n existe (pelo mens n inteira)
+					return 0; //retorna falso, pois a palavra n existe (pelo menos não inteirinha)
 				}
 			 }
-    		return 1; //(retorna true pra sabermos q a palabra j[a existe)
+    		return 1; //(retorna true pra sabermos q a palabra já existe)
 		}
 		
 		void search(){
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
+			Node* pNode=pRoot;
 			int ies= 0;
 			string word;
   			cout << "Digite uma palavra: ";
@@ -75,11 +79,12 @@ class busca{
 			  }
 			else{
 				cout<<"a palavra não existe na arvore" <<endl;
+				//SUGESTÃO
 			}
 			auto stop = high_resolution_clock::now();
 			auto duration = duration_cast<microseconds>(stop - start);
 			cout<< "a pesquisa foi feita em ";
-			cout << duration.count()/1000000 <<" segundos" <<endl;
+			cout << duration.count()/1000000 <<" segundos... ou " <<duration.count() <<" microsegundos!" <<endl;
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
@@ -102,6 +107,10 @@ class busca{
 			}
 			
 		} 
+		
+		void inserir_titulo(string titulo, int id){
+			titulos[id-1]=titulo;
+		}
 		
 		void printe(vector<int> g1){
     		for (auto i = g1.begin(); i != g1.end(); ++i){
