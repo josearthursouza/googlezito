@@ -2,6 +2,8 @@
 using std::cout;
 using std::cin;
 using std::endl;
+#include<fstream>
+#include<sstream>
 
 #include<string>
 using std::string;
@@ -38,6 +40,7 @@ struct Node{
 class busca{
 	private:
 		Node *pRoot;
+		string titulos[2];
 		
 	public:
 		
@@ -70,7 +73,10 @@ class busca{
   			getline(cin, word);
   			auto start = high_resolution_clock::now();
   			if(pesquisar(word, pNode, ies)==1){
-  				cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
+  				//cout<<"a palavra existe" <<endl; //e tem correspondencia nos seguintes artigos: ";
+  				for(int i = 0; i<=pNode->len_id -1 ;i++){
+  					cout<<titulos[pNode->vec.at(i)] <<endl;
+				  }
   				//printe(pNode->vec);
 			  }
 			else{
@@ -82,7 +88,8 @@ class busca{
 			cout << duration.count()/1000000 <<" segundos" <<endl;
 		}
 		
-		void inserir(string word, int id){ //vamos inserir uma palavra
+		void inserir(string word, int id, string title){ //vamos inserir uma palavra
+			titulos[id] = title;
 			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
 			int ies= 0; //numero que indicará quantas letras da palavra já existem
 			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
@@ -100,6 +107,7 @@ class busca{
 				inserir_id(pNode->vec, id, pNode->len_id);
 				pNode->fim=1;
 			}
+			
 			
 		} 
 		
@@ -136,15 +144,28 @@ class busca{
 };
 
 int main(){
-	busca b;
 	Node* pNode;
 	int ies;
-
-	b.inserir("correspondencia",1);
-	b.inserir("oba",2);
+	string titulos[2];
+	busca b;
+	ifstream dados;
+	dados.open("vai_dar_certo.txt");
+	for(int i=0;i<2;i++){
+		string id;
+		getline(dados,id);
+		string titulo;
+		getline(dados,titulo);
+		titulos[i] = titulo;
+		
+		string palavras;
+		getline(dados,palavras);
+		stringstream split;
+		split << palavras;
+		string word;
+		while(split >> word){
+			b.inserir(word,i,titulo);
+		}
+	}
 	b.search();
-	b.search();
-	
 	delete[] pNode;
-	return 0;
 }
