@@ -71,20 +71,20 @@ class busca{
 			Node* pNode=pRoot;
 			int ies= 0;
 			string word;
-			string w;
 			
 			while(true){
 				
 				cout<<"?quieres hacer una pesquisa? (s/n)" <<endl;
-				getline(cin,w);
+				getline(cin,word);
 				
-				if(w=="s"){
+				if(word=="s"){
   					cout << "Digite uma palavra... ";
 	  				getline(cin, word);
 	  				
   					auto start = high_resolution_clock::now();
-  					
-  					if(pesquisar(word, pNode, ies)==1){
+  					bool b=(pesquisar(word, pNode, ies)==1);
+  					auto stop = high_resolution_clock::now();
+  					if(b){
   						cout<< "achamos a palavra que você quer! "
 						  	<<endl
 							<<"Ela tem correspondencia no(s) seguinte(s) "
@@ -92,19 +92,28 @@ class busca{
 							<<" titulo(s):"
 							<<endl;
   						for(int i = 0; i<=pNode->len_id -1 ;i++){
-	  						cout << "- " <<i <<"....."<<titulos[pNode->vec.at(i)] <<endl;
+	  						cout << "[" <<i <<"]....."<<titulos[pNode->vec.at(i)] <<endl;
 					  	}
+					  	cout <<"quer abrir algum desses titulos? (a resposta tem q ser n por enquanto)"<<endl;
+					  	getline(cin, word);
+					  	if(word=="n"){
+					  		cout<< "ta legal!" <<endl;
+						  }
+					  	else{
+						  cout<< "eu n disse q ainda n dava??" <<endl;
+						  }
 				  	}
 					else{
-						cout<<"a palavra não existe na arvore" <<endl;
+						cout<<"Nao achamos a palavra na arvore :(" <<endl;
+						//SGESTÃO
 					}
-					auto stop = high_resolution_clock::now();
 					auto duration = duration_cast<microseconds>(stop - start);
-					cout<<endl << "a pesquisa foi feita em ";
-					cout << duration.count()/1000000 <<" segundos... ou " << duration.count() <<" microsegundos :) "<<endl;
+					cout << "a pesquisa foi feita em ";
+					cout << duration.count()/1000000 <<" segundos... ou " << duration.count() <<" microsegundos :) "<<endl <<endl;
 				}
 				
 				else{
+					cout<< "obrigado e volte sempre!";
 					return;
 				}
 			}
