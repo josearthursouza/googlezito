@@ -105,7 +105,7 @@ class busca{
 				  	}
 					else{
 						cout<<"Nao achamos a palavra na arvore :(" <<endl;
-						//SGESTÃO
+						//SUGESTÃO
 					}
 					auto duration = duration_cast<microseconds>(stop - start);
 					cout << "a pesquisa foi feita em ";
@@ -169,6 +169,26 @@ class busca{
 			return;
 		}
 		
+		void sugerir(string word){
+			Node* pNode=pRoot; 
+			
+			for(int i=0; i< word.length(); i++){ 
+			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ 
+			 		pNode = pNode->pchild[int(word[i]) - 97];
+			 		cout<< word[i] <<endl;
+				 } 
+				else{
+					for(int j=0; j<26; j++){
+						if( pNode->pchild[j] != nullptr ){
+							cout <<char(j+97) <<" " ;
+						}
+					}
+					cout<<endl;
+				}
+			 }
+			
+		}
+		
 		void compaquitar(){
 			
 		}
@@ -201,7 +221,11 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
-	b.search();
+	string w="abacace";
+	b.sugerir(w);
+	w="streng";
+	b.sugerir(w);
+	//b.search();
 	delete[] pNode;
 	return 0;
 }
