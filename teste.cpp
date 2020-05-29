@@ -42,7 +42,7 @@ struct Node{
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[2];
+		string titulos[3];
 		
 	public:
 		
@@ -105,7 +105,8 @@ class busca{
 				  	}
 					else{
 						cout<<"Nao achamos a palavra na arvore :(" <<endl;
-						//SUGESTÃO
+						sugerir(word);
+						
 					}
 					auto duration = duration_cast<microseconds>(stop - start);
 					cout << "a pesquisa foi feita em ";
@@ -171,7 +172,7 @@ class busca{
 		
 		void sugerir(string word){
 			Node* pNode=pRoot; 
-			
+			cout<<"nao encontramos a palavra " <<word <<". Sugerimos:" <<endl;
 			for(int i=0; i< word.length(); i++){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ 
 			 		pNode = pNode->pchild[int(word[i]) - 97];
@@ -183,7 +184,8 @@ class busca{
 							cout <<char(j+97) <<" " ;
 						}
 					}
-					cout<<endl;
+					cout<<endl <<endl;
+					return;
 				}
 			 }
 			
@@ -200,11 +202,11 @@ class busca{
 int main(){
 	Node* pNode;
 	int ies;
-	string titulos[2];
+	string titulos[3];
 	busca b;
 	ifstream dados;
 	dados.open("vai_dar_certo.txt");
-	for(int i=0;i<2;i++){
+	for(int i=0;i<3;i++){
 		string id;
 		getline(dados,id);
 		string titulo;
@@ -221,11 +223,11 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
-	string w="abacace";
-	b.sugerir(w);
-	w="streng";
-	b.sugerir(w);
-	//b.search();
+	//string w="abacace";
+	//b.sugerir(w);
+	//w="streng";
+	//b.sugerir(w);
+	b.search();
 	delete[] pNode;
 	return 0;
 }
