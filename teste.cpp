@@ -174,10 +174,12 @@ class busca{
 			Node* pNode=pRoot; 
 			cout<<"nao encontramos a palavra " <<word <<". Sugerimos:" <<endl;
 			int i=0;
+			string print="";
 			while(i< word.length()){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ 
 			 		pNode = pNode->pchild[int(word[i]) - 97];
-			 		cout<< word[i] ;
+			 		//cout<< word[i] ;
+			 		print+=word[i];
 			 		i++;
 				 }
 				 
@@ -186,8 +188,9 @@ class busca{
 					while(j<26){
 						if( pNode->pchild[j] != nullptr ){
 							Node* pNodeee=pNode;
+							print[print.length()-1]=' ';
 							cout <<"(" ;
-							printa_resto(pNodeee);
+							printa_resto(pNodeee,print);
 							cout<<")" <<endl;
 							return;
 						}
@@ -199,17 +202,24 @@ class busca{
 			 }
 		}
 		
-		void printa_resto(Node* pNode){
+		void printa_resto(Node* pNode, string print){
+			print[print.length()-1]=pNode->data;
+			print+=' ';
 			if(pNode->fim!=1){
+				///Node* pNode=pNodee;
 				for(int i=0;i<26;i++){
 					if( pNode->pchild[i] != nullptr ){
-						cout <<char(i+97);
+						//print+=char(i+97);
 						Node* pNodeee=pNode->pchild[i];
-						printa_resto(pNodeee);		
+						//print+=char(i+97);
+						printa_resto(pNodeee, print);	
+						
+						//cout <<char(i+97);	
 					}
 				}
 			}
 			else{
+				cout<< print;
 				cout<<", ";
 				return;
 			}
