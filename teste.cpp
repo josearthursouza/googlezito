@@ -53,11 +53,11 @@ class busca{
 		//~busca(){ //FUTURO DESTRUTOR
 		
 		int pesquisar(string word, Node* & pNode, int & ies){
-			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
-			ies=0; //e este deve ser o número de letras encontradas 
+			pNode=pRoot; //depois do loop este ponteiro deve apontar para o Ãºltimo node possÃ­vel.
+			ies=0; //e este deve ser o nÃºmero de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
-			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
-			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra próxima letra
+			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra jÃ¡ existente, prosseguimos
+			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra prÃ³xima letra
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
@@ -85,7 +85,7 @@ class busca{
   					bool b=(pesquisar(word, pNode, ies)==1);
   					auto stop = high_resolution_clock::now();
   					if(b){
-  						cout<< "achamos a palavra que você quer! "
+  						cout<< "achamos a palavra que vocÃª quer! "
 						  	<<endl
 							<<"Ela tem correspondencia no(s) seguinte(s) "
 							<<pNode->len_id
@@ -125,18 +125,18 @@ class busca{
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
-			int ies= 0; //numero que indicará quantas letras da palavra já existem
-			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+			Node* pNode=pRoot; //node para onde devemos comeÃ§ar a inseriri letras, considerando que parte da palavra pode jÃ¡ existir
+			int ies= 0; //numero que indicarÃ¡ quantas letras da palavra jÃ¡ existem
+			if(pesquisar(word, pNode, ies)==1){ //chamamos a funÃ§Ã£o find, q retorna true caso a palavra jÃ¡ exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				inserir_id(pNode->vec, id, pNode->len_id);
 				return;
 			}
 			else{ //caso a palavra n exista por completo
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
+					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse Ã© o prÃ³ximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					newNode->pP=pNode; //criamos o pai dele
-					pNode=newNode; //e vamos pro próximo node
+					pNode=newNode; //e vamos pro prÃ³ximo node
 					
 				}
 				inserir_id(pNode->vec, id, pNode->len_id);
@@ -173,22 +173,47 @@ class busca{
 		void sugerir(string word){
 			Node* pNode=pRoot; 
 			cout<<"nao encontramos a palavra " <<word <<". Sugerimos:" <<endl;
-			for(int i=0; i< word.length(); i++){ 
+			int i=0;
+			while(i< word.length()){ 
 			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ 
 			 		pNode = pNode->pchild[int(word[i]) - 97];
-			 		cout<< word[i] <<endl;
-				 } 
+			 		cout<< word[i] ;
+			 		i++;
+				 }
+				 
 				else{
-					for(int j=0; j<26; j++){
+					int j=0;
+					while(j<26){
 						if( pNode->pchild[j] != nullptr ){
-							cout <<char(j+97) <<" " ;
+							Node* pNodeee=pNode;
+							cout <<"(" ;
+							printa_resto(pNodeee);
+							cout<<")" <<endl;
+							return;
 						}
+						j++;
 					}
 					cout<<endl <<endl;
 					return;
 				}
 			 }
-			
+		}
+		
+		void printa_resto(Node* pNode){
+			if(pNode->fim!=1){
+				for(int i=0;i<26;i++){
+					if( pNode->pchild[i] != nullptr ){
+						cout <<char(i+97);
+						Node* pNodeee=pNode->pchild[i];
+						printa_resto(pNodeee);		
+					}
+				}
+			}
+			else{
+				cout<<", ";
+				return;
+			}
+		
 		}
 		
 		void compaquitar(){
