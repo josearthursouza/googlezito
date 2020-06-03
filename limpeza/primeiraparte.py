@@ -7,7 +7,7 @@ Created on Sat May 30 13:22:31 2020
 
 def achatitulo(poema):
     inicio = poema.find('title') + 7
-    fim = poema[inicio:].find('"') + inicio
+    fim = poema.find('nonfiltered') - 2 
     return poema[inicio:fim]
 
 def achaconteudo(poema):
