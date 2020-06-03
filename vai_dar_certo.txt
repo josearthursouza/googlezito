@@ -7,3 +7,6 @@ buceta barriga bacon barricada bola basquete baixa bashinha bolsonaro babilonia 
 3
 sugestao
 string strong strangular
+4
+aniversarios
+26dez2000 02ago2001 20out2000 16jul1999

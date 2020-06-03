@@ -18,18 +18,18 @@ struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
     Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
-	Node* pchild[26]; //lista de chars possiveis a seguir
+	Node* pchild[36]; //lista de chars possiveis a seguir
 	vector<int> vec;
 	int len_id;
 
     Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
-	for(int i=0;i<26;i++){
+	for(int i=0;i<36;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
 	
 	Node(): fim(0), pP(nullptr), len_id(0) {
-	for(int i=0;i<26;i++){
+	for(int i=0;i<36;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
 	}
 	}
@@ -77,7 +77,7 @@ class busca{
 			}
 			else{ //caso a palavra n exista por completo
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					Node* &newNode = pNode->pchild[int(word[i]) - 97]; //esse é o próximo node, a principio nullptr
+					Node* &newNode = pNode->pchild[iint(word[i])]; //esse é o próximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					newNode->pP=pNode; //criamos o pai dele
 					pNode=newNode; //e vamos pro próximo node	
@@ -101,8 +101,8 @@ class busca{
 			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
 			ies=0; //e este deve ser o número de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
-			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
-			 		pNode = pNode->pchild[int(word[i]) - 97]; //fazemos o pNode ir pra próxima letra
+			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
+			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra próxima letra
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
@@ -178,15 +178,15 @@ class busca{
 			int i=0;
 			string print="";
 			while(i< word.length()){ 
-			 	if(  pNode->pchild[int(word[i]) - 97] != nullptr ){ 
-			 		pNode = pNode->pchild[int(word[i]) - 97];
+			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ 
+			 		pNode = pNode->pchild[iint(word[i])];
 			 		print+=word[i];
 			 		i++;
 				}
 				 
 				else{
 					int j=0;
-					while(j<26){
+					while(j<36){
 						if( pNode->pchild[j] != nullptr ){
 							Node* pNodeee=pNode;
 							cout <<"( " ;
@@ -206,7 +206,7 @@ class busca{
 			print[print.length()-1]=pNode->data;
 			print+=' ';
 			if(pNode->fim!=1){
-				for(int i=0;i<26;i++){
+				for(int i=0;i<36;i++){
 					if( pNode->pchild[i] != nullptr ){
 						Node* pNodeee=pNode->pchild[i];
 						printa_resto(pNodeee, print);		
