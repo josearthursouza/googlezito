@@ -219,6 +219,21 @@ class busca{
 			}
 		}
 		
+		void serializacao(string file_name){
+			ofstream file;
+			file.open(file_name);
+			Node * pNode = pRoot;
+        	segunda_serializacao(pNode, file);
+		}
+		void segunda_serializacao(Node * pCur, ofstream & file){
+        	file << pCur->data << ".";
+        	for(int i=0;i<36;i++){
+            	segunda_serializacao(pCur->pchild[i], file);
+        	}
+        
+        file << "-"; 
+    }
+		
 	};
 
 int main(){
@@ -247,5 +262,6 @@ int main(){
 	}
 	b.search();
 	delete[] pNode;
+	b.serializacao("serializacao.txt");
 	return 0;
 }
