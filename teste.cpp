@@ -112,10 +112,14 @@ class busca{
     		return 1; //(retorna true pra sabermos q a palabra j[a existe)
 		}
 		
-		void search(){
+		void searchy(){
+			
+		}
+		
+		void search(string word){
 			Node* pNode=pRoot;
 			int ies= 0;
-			string word;
+			//string word;
 			
 			while(true){
 				
