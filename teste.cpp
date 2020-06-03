@@ -40,7 +40,7 @@ class steady_clock;
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[3];
+		string titulos[4];
 		
 	public:
 		
@@ -69,18 +69,18 @@ class busca{
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
-			int ies= 0; //numero que indicará quantas letras da palavra já existem
-			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+			Node* pNode=pRoot; //node para onde devemos comeÃ§ar a inseriri letras, considerando que parte da palavra pode jÃ¡ existir
+			int ies= 0; //numero que indicarÃ¡ quantas letras da palavra jÃ¡ existem
+			if(pesquisar(word, pNode, ies)==1){ //chamamos a funÃ§Ã£o find, q retorna true caso a palavra jÃ¡ exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				inserir_idd(pNode->vec, id, pNode->len_id);
 				return;
 			}
 			else{ //caso a palavra n exista por completo
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					Node* &newNode = pNode->pchild[iint(word[i])]; //esse é o próximo node, a principio nullptr
+					Node* &newNode = pNode->pchild[iint(word[i])]; //esse Ã© o prÃ³ximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					newNode->pP=pNode; //criamos o pai dele
-					pNode=newNode; //e vamos pro próximo node	
+					pNode=newNode; //e vamos pro prÃ³ximo node	
 				}
 				inserir_idd(pNode->vec, id, pNode->len_id);
 				pNode->fim=1;
@@ -98,11 +98,11 @@ class busca{
 		}
 		
 		int pesquisar(string word, Node* & pNode, int & ies){
-			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
-			ies=0; //e este deve ser o número de letras encontradas 
+			pNode=pRoot; //depois do loop este ponteiro deve apontar para o Ãºltimo node possÃ­vel.
+			ies=0; //e este deve ser o nÃºmero de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
-			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
-			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra próxima letra
+			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra jÃ¡ existente, prosseguimos
+			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra prÃ³xima letra
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
@@ -112,64 +112,97 @@ class busca{
     		return 1; //(retorna true pra sabermos q a palabra j[a existe)
 		}
 		
-		void search(){
-			Node* pNode=pRoot;
-			int ies= 0;
-			string word;
+		void searchy(){
+			string palavras;
+			Node* pNode;
+			vector<int> vec1;
 			
 			while(true){
-				
+				vec1={};
 				cout<<"?quieres hacer una pesquisa? (s/n)" <<endl;
-				getline(cin,word);
-				
-				if(word=="s"){
-  					cout << "Digite uma palavra... ";
-	  				getline(cin, word);
-	  				
-	  				auto start = std::chrono::steady_clock::now();
-  					bool b=(pesquisar(word, pNode, ies)==1);
-  					auto end = std::chrono::steady_clock::now();
-  					
-  					if(b){
-  						if(pNode->fim==1){
-  							cout<< "achamos a palavra que voce quer! "
-						  		<<endl
-								<<"Ela tem correspondencia no(s) seguinte(s) "
-								<<pNode->len_id
-								<<" titulo(s):"
-								<<endl;
-  							for(int i = 0; i<=pNode->len_id -1 ;i++){
-	  							cout << "[" <<i <<"]....."<<titulos[pNode->vec.at(i)] <<endl;
-					  		}
-						  	cout <<"quer abrir algum desses titulos? (a resposta tem q ser n por enquanto)"<<endl;
-						  	getline(cin, word);
-						  	if(word=="n"){
-						  		cout<< "ta legal!" <<endl;
-						  	}
-					  		else{
-							  cout<< "eu n disse q ainda n dava??" <<endl;
-						  	}
-						}
-						else{
-							cout <<"Hmmm...parece que voc� n�o digitou a palavra completa. Voc� pode tentar:"<<endl;
-							printa_resto(pNode,word);
-							cout<<endl<<endl;
-						}
+				getline(cin,palavras);
+				if(palavras=="s"){
+					string palavras;
+					cout << "Digite uma palavra: ";
+					getline(cin, palavras);
+					stringstream split;
+					split << palavras;
+					string word;
+					while(split >> word){
+						pNode=pRoot;
+						search(word,pNode);
+						titulos_comuns(vec1,pNode->vec); 
 					}
-					else{
-						sugerir(word);
+					cout<<"ambas as palavras aparecem nos seguintes titulos:"<<endl;
+					for(int i=0;i<vec1.size();i++){
+						cout<<"["<<i<<"]- "<<titulos[vec1.at(i)] <<endl;
 					}
-					std::chrono::duration<double> diff = end-start;
-					
-					cout << "a pesquisa foi feita em ";
-					cout <<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl<<endl;
 				}
-				
 				else{
 					cout<< "obrigado e volte sempre!";
 					return;
 				}
 			}
+		}
+		
+	void titulos_comuns(vector<int> & vec1, vector<int> vec2){
+			if(vec1.empty()){
+				vec1=vec2;
+				return;
+			}
+			else{
+				int i=0;
+				while(!(vec2.empty()) and vec2.front()<=vec1.back()){
+					if(vec1.at(i)==vec2.front()){
+						i++;
+						vec2.erase(vec2.begin());
+					}
+					else if(vec1.at(i)>vec2.front()){
+						vec2.erase(vec2.begin());
+					}
+					else if(vec1.at(i)<vec2.front()){
+						vec1.erase(vec1.begin()+i);
+					}
+				}
+				while(vec1.size()>i){
+					vec1.pop_back();
+				}
+			}
+			return;
+		}
+		
+		void printe(vector<int> g1){
+    		for (auto i = g1.begin(); i != g1.end(); ++i){
+        		cout << *i << " "; 
+    		}
+    		cout<<endl;
+		}
+		
+		void search(string word, Node* & pNode){
+			int ies= 0;
+
+	  		auto start = std::chrono::steady_clock::now();
+  			bool b=(pesquisar(word, pNode, ies)==1);
+  			auto end = std::chrono::steady_clock::now();
+  					
+  			if(b){
+  				if(pNode->fim==1){//EXISTENTE E COMPLETA
+				}
+				else{//EXISTENTE, NÃO COMPLETA
+					cout <<"Hmmm...parece que você não digitou a palavra completa. Você pode tentar:"<<endl;
+					printa_resto(pNode,word);
+					cout<<endl<<endl;
+					return;
+				}
+			}
+			else{//NÃO EXISTENTE
+				sugerir(word);
+				return;
+			}
+			std::chrono::duration<double> diff = end-start;
+			
+			cout << "a pesquisa da palavra "<<word <<" foi feita em ";
+			cout <<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl;
 		}
 		
 		void sugerir(string word){
@@ -219,31 +252,16 @@ class busca{
 			}
 		}
 		
-		void serializacao(string file_name){
-			ofstream file;
-			file.open(file_name);
-			Node * pNode = pRoot;
-        	segunda_serializacao(pNode, file);
-		}
-		void segunda_serializacao(Node * pCur, ofstream & file){
-        	file << pCur->data << ".";
-        	for(int i=0;i<36;i++){
-            	segunda_serializacao(pCur->pchild[i], file);
-        	}
-        
-        file << "-"; 
-    }
-		
 	};
 
 int main(){
 	Node* pNode;
 	int ies;
-	string titulos[3];
+	string titulos[4];
 	busca b;
 	ifstream dados;
 	dados.open("vai_dar_certo.txt");
-	for(int i=0;i<3;i++){
+	for(int i=0;i<4;i++){
 		string id;
 		getline(dados,id);
 		string titulo;
@@ -260,8 +278,7 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
-	b.search();
+	b.searchy();
 	delete[] pNode;
-	b.serializacao("serializacao.txt");
-	return 0;
+	return 3221225477;
 }
