@@ -1,5 +1,6 @@
 #include <chrono>
-
+#include <algorithm>    
+using std::min;
 #include<iostream>
 using std::cout;
 using std::cin;
@@ -140,8 +141,22 @@ class busca{
 						titulos_comuns(vec1,pNode->vec); 
 					}
 					cout<<"ambas as palavras aparecem nos seguintes titulos:"<<endl;
-					for(int i=0;i<vec1.size();i++){
+					int j=20;
+					for(int i=0;i<min(int(vec1.size()),j);i++){
 						cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
+					}
+					while(int(vec1.size())>j){
+						cout<<"quer abrir mais titulos?";
+						getline(cin,palavras);
+						if(palavras=="s"){
+							for(int i=0;i<min(int(vec1.size()),j);i++){
+								cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
+							}
+							j+=20;
+						}
+						else{
+							break;
+						}
 					}
 					while(true){
 						cout<<"quer abrir algum desses titulos? (s/n)"<<endl;
