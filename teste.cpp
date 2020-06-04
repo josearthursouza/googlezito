@@ -145,6 +145,10 @@ class busca{
 			}
 		}
 		
+	void return_txt(int i){
+		
+	}
+		
 	void titulos_comuns(vector<int> & vec1, vector<int> vec2){
 			if(vec1.empty()){
 				vec1=vec2;
