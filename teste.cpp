@@ -69,11 +69,11 @@ class busca{
 			}
 		}
 		
-		void inserir(string word, int id){ //vamos inserir uma palavra
+		void inserir(string word, string ids){ //vamos inserir uma palavra
 			Node* pNode=pRoot; //node para onde devemos comeÃ§ar a inseriri letras, considerando que parte da palavra pode jÃ¡ existir
 			int ies= 0; //numero que indicarÃ¡ quantas letras da palavra jÃ¡ existem
 			if(pesquisar(word, pNode, ies)==1){ //chamamos a funÃ§Ã£o find, q retorna true caso a palavra jÃ¡ exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
-				inserir_idd(pNode->vec, id, pNode->len_id);
+				inserir_idd(pNode->vec, ids, pNode->len_id);
 				return;
 			}
 			else{ //caso a palavra n exista por completo
@@ -83,7 +83,7 @@ class busca{
 					newNode->pP=pNode; //criamos o pai dele
 					pNode=newNode; //e vamos pro prÃ³ximo node	
 				}
-				inserir_idd(pNode->vec, id, pNode->len_id);
+				inserir_idd(pNode->vec, ids, pNode->len_id);
 				pNode->fim=1;
 			}	
 		} 
@@ -92,9 +92,14 @@ class busca{
 			titulos[id]=titulo;
 		}
 		
-		void inserir_idd(vector<int> & vec, int & id, int & len_id){
-			vec.push_back(id);
-			len_id++;
+		void inserir_idd(vector<int> & vec, string ids, int & len_id){
+			stringstream split;
+			split << ids;
+			string id;
+			while(split >> id){
+				vec.push_back(stoi(id));
+				len_id++;
+			}
 			return;
 		}
 		
@@ -136,17 +141,17 @@ class busca{
 					}
 					cout<<"ambas as palavras aparecem nos seguintes titulos:"<<endl;
 					for(int i=0;i<vec1.size();i++){
-						cout<<"["<<i<<"]- "<<titulos[vec1.at(i)] <<endl;
+						cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
 					}
 					while(true){
 						cout<<"quer abrir algum desses titulos? (s/n)"<<endl;
 						getline(cin,palavras);
 						if(palavras=="s"){
 							cout<<"qual?"<<endl;
-							printe(vec1);
+							//printe(vec1);
 							getline(cin,palavras);
-							cout<< vec1.at(stoi(palavras));
-							return_txt(vec1.at(stoi(palavras)) +1);
+							//cout<< vec1.at(stoi(palavras));
+							return_txt(vec1.at(stoi(palavras)) );
 							cout<<endl;
 						}
 						else{
@@ -306,30 +311,28 @@ int main(){
 	string titulos[4];
 	busca b;
 	ifstream dados;
-	dados.open("V_ids_titulos_e_textos.txt");
-	for(int i=0;i<4;i++){
-		string id;
-		getline(dados,id);
+	ifstream dades;
+	dados.open("V_palavras_e_ids.txt");
+	dades.open("V_titulos.txt");
+	for(int i=0;i<4;i++){ //numero de titulos
 		string titulo;
-		getline(dados,titulo);
-		titulos[i] = titulo;
-		
-		string palavras;
-		getline(dados,palavras);
-		stringstream split;
-		split << palavras;
-		string word;
+		getline(dades,titulo);
 		b.inserir_titulo(titulo, i);
-		while(split >> word){
-			b.inserir(word,i);
-		}
+		titulos[i]=titulo;
 	}
-	//b.sugerir("bomba");
-	//b.return_txt(0);
-//	b.return_txt(1);
-//	b.return_txt(2);
-//	b.return_txt(3);
+	for(int i=0;i<26;i++){ //n�mero de palavras
+		string palavra;
+		getline(dados,palavra);
+		string ids;
+		getline(dados,ids);
+		b.inserir(palavra,ids);
+	}
+	
+	//for(int i=0;i<4;i++){
+	//	cout<<i<<"-"<<titulos[i]<<endl;
+	//}
 	b.searchy();
+	//cout<<*titulos;
 	delete[] pNode;
 	return 3;
 }
