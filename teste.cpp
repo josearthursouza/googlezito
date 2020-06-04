@@ -40,7 +40,7 @@ class steady_clock;
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[3];
+		string titulos[4];
 		
 	public:
 		
@@ -113,67 +113,96 @@ class busca{
 		}
 		
 		void searchy(){
-			
-		}
-		
-		void search(string word){
-			Node* pNode=pRoot;
-			int ies= 0;
-			//string word;
+			string palavras;
+			Node* pNode;
+			vector<int> vec1;
 			
 			while(true){
-				
+				vec1={};
 				cout<<"?quieres hacer una pesquisa? (s/n)" <<endl;
-				getline(cin,word);
-				
-				if(word=="s"){
-  					cout << "Digite uma palavra... ";
-	  				getline(cin, word);
-	  				
-	  				auto start = std::chrono::steady_clock::now();
-  					bool b=(pesquisar(word, pNode, ies)==1);
-  					auto end = std::chrono::steady_clock::now();
-  					
-  					if(b){
-  						if(pNode->fim==1){
-  							cout<< "achamos a palavra que voce quer! "
-						  		<<endl
-								<<"Ela tem correspondencia no(s) seguinte(s) "
-								<<pNode->len_id
-								<<" titulo(s):"
-								<<endl;
-  							for(int i = 0; i<=pNode->len_id -1 ;i++){
-	  							cout << "[" <<i <<"]....."<<titulos[pNode->vec.at(i)] <<endl;
-					  		}
-						  	cout <<"quer abrir algum desses titulos? (a resposta tem q ser n por enquanto)"<<endl;
-						  	getline(cin, word);
-						  	if(word=="n"){
-						  		cout<< "ta legal!" <<endl;
-						  	}
-					  		else{
-							  cout<< "eu n disse q ainda n dava??" <<endl;
-						  	}
-						}
-						else{
-							cout <<"Hmmm...parece que você não digitou a palavra completa. Você pode tentar:"<<endl;
-							printa_resto(pNode,word);
-							cout<<endl<<endl;
-						}
+				getline(cin,palavras);
+				if(palavras=="s"){
+					string palavras;
+					cout << "Digite uma palavra: ";
+					getline(cin, palavras);
+					stringstream split;
+					split << palavras;
+					string word;
+					while(split >> word){
+						pNode=pRoot;
+						search(word,pNode);
+						titulos_comuns(vec1,pNode->vec); 
 					}
-					else{
-						sugerir(word);
+					cout<<"ambas as palavras aparecem nos seguintes titulos:"<<endl;
+					for(int i=0;i<vec1.size();i++){
+						cout<<"["<<i<<"]- "<<titulos[vec1.at(i)] <<endl;
 					}
-					std::chrono::duration<double> diff = end-start;
-					
-					cout << "a pesquisa foi feita em ";
-					cout <<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl<<endl;
 				}
-				
 				else{
 					cout<< "obrigado e volte sempre!";
 					return;
 				}
 			}
+		}
+		
+	void titulos_comuns(vector<int> & vec1, vector<int> vec2){
+			if(vec1.empty()){
+				vec1=vec2;
+				return;
+			}
+			else{
+				int i=0;
+				while(!(vec2.empty()) and vec2.front()<=vec1.back()){
+					if(vec1.at(i)==vec2.front()){
+						i++;
+						vec2.erase(vec2.begin());
+					}
+					else if(vec1.at(i)>vec2.front()){
+						vec2.erase(vec2.begin());
+					}
+					else if(vec1.at(i)<vec2.front()){
+						vec1.erase(vec1.begin()+i);
+					}
+				}
+				while(vec1.size()>i){
+					vec1.pop_back();
+				}
+			}
+			return;
+		}
+		
+		void printe(vector<int> g1){
+    		for (auto i = g1.begin(); i != g1.end(); ++i){
+        		cout << *i << " "; 
+    		}
+    		cout<<endl;
+		}
+		
+		void search(string word, Node* & pNode){
+			int ies= 0;
+
+	  		auto start = std::chrono::steady_clock::now();
+  			bool b=(pesquisar(word, pNode, ies)==1);
+  			auto end = std::chrono::steady_clock::now();
+  					
+  			if(b){
+  				if(pNode->fim==1){//EXISTENTE E COMPLETA
+				}
+				else{//EXISTENTE, NÃO COMPLETA
+					cout <<"Hmmm...parece que você não digitou a palavra completa. Você pode tentar:"<<endl;
+					printa_resto(pNode,word);
+					cout<<endl<<endl;
+					return;
+				}
+			}
+			else{//NÃO EXISTENTE
+				sugerir(word);
+				return;
+			}
+			std::chrono::duration<double> diff = end-start;
+			
+			cout << "a pesquisa da palavra "<<word <<" foi feita em ";
+			cout <<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl;
 		}
 		
 		void sugerir(string word){
@@ -228,11 +257,11 @@ class busca{
 int main(){
 	Node* pNode;
 	int ies;
-	string titulos[3];
+	string titulos[4];
 	busca b;
 	ifstream dados;
 	dados.open("vai_dar_certo.txt");
-	for(int i=0;i<3;i++){
+	for(int i=0;i<4;i++){
 		string id;
 		getline(dados,id);
 		string titulo;
@@ -249,7 +278,7 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
-	b.search();
+	b.searchy();
 	delete[] pNode;
-	return 0;
+	return 3221225477;
 }
