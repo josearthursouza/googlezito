@@ -10,8 +10,7 @@ using std::ifstream;
 using std::string;
 using std::getline;
 
-
-int main(){
+void a(){
 	string txt;
 	ifstream dados;
 	dados.open("textos_teste.txt");
@@ -19,7 +18,10 @@ int main(){
 		getline(dados,txt);
 	}
 	cout<<txt;
-	
+}
+
+int main(){
+	a();
 	
 	return 0;
 }

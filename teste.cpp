@@ -297,6 +297,7 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
+	b.sugerir("bomba");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
