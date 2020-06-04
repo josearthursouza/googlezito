@@ -69,18 +69,18 @@ class busca{
 		}
 		
 		void inserir(string word, int id){ //vamos inserir uma palavra
-			Node* pNode=pRoot; //node para onde devemos começar a inseriri letras, considerando que parte da palavra pode já existir
-			int ies= 0; //numero que indicará quantas letras da palavra já existem
-			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, q retorna true caso a palavra já exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+			Node* pNode=pRoot; //node para onde devemos comeÃ§ar a inseriri letras, considerando que parte da palavra pode jÃ¡ existir
+			int ies= 0; //numero que indicarÃ¡ quantas letras da palavra jÃ¡ existem
+			if(pesquisar(word, pNode, ies)==1){ //chamamos a funÃ§Ã£o find, q retorna true caso a palavra jÃ¡ exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				inserir_idd(pNode->vec, id, pNode->len_id);
 				return;
 			}
 			else{ //caso a palavra n exista por completo
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					Node* &newNode = pNode->pchild[iint(word[i])]; //esse é o próximo node, a principio nullptr
+					Node* &newNode = pNode->pchild[iint(word[i])]; //esse Ã© o prÃ³ximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					newNode->pP=pNode; //criamos o pai dele
-					pNode=newNode; //e vamos pro próximo node	
+					pNode=newNode; //e vamos pro prÃ³ximo node	
 				}
 				inserir_idd(pNode->vec, id, pNode->len_id);
 				pNode->fim=1;
@@ -98,11 +98,11 @@ class busca{
 		}
 		
 		int pesquisar(string word, Node* & pNode, int & ies){
-			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
-			ies=0; //e este deve ser o número de letras encontradas 
+			pNode=pRoot; //depois do loop este ponteiro deve apontar para o Ãºltimo node possÃ­vel.
+			ies=0; //e este deve ser o nÃºmero de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
-			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra já existente, prosseguimos
-			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra próxima letra
+			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra jÃ¡ existente, prosseguimos
+			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra prÃ³xima letra
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
@@ -188,14 +188,14 @@ class busca{
   			if(b){
   				if(pNode->fim==1){//EXISTENTE E COMPLETA
 				}
-				else{//EXISTENTE, N�O COMPLETA
-					cout <<"Hmmm...parece que voc� n�o digitou a palavra completa. Voc� pode tentar:"<<endl;
+				else{//EXISTENTE, NÃO COMPLETA
+					cout <<"Hmmm...parece que você não digitou a palavra completa. Você pode tentar:"<<endl;
 					printa_resto(pNode,word);
 					cout<<endl<<endl;
 					return;
 				}
 			}
-			else{//N�O EXISTENTE
+			else{//NÃO EXISTENTE
 				sugerir(word);
 				return;
 			}
