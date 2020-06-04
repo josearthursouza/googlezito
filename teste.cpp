@@ -10,6 +10,7 @@ using std::endl;
 #include<string>
 using std::string;
 using std::getline;
+using std::to_string;
 
 #include<vector>
 using namespace std; 
@@ -137,6 +138,21 @@ class busca{
 					for(int i=0;i<vec1.size();i++){
 						cout<<"["<<i<<"]- "<<titulos[vec1.at(i)] <<endl;
 					}
+					while(true){
+						cout<<"quer abrir algum desses titulos? (s/n)"<<endl;
+						getline(cin,palavras);
+						if(palavras=="s"){
+							cout<<"qual?"<<endl;
+							printe(vec1);
+							getline(cin,palavras);
+							cout<< vec1.at(stoi(palavras));
+							return_txt(vec1.at(stoi(palavras)) +1);
+							cout<<endl;
+						}
+						else{
+							break;
+						}
+					}	
 				}
 				else{
 					cout<< "obrigado e volte sempre!";
@@ -145,9 +161,20 @@ class busca{
 			}
 		}
 		
-	void return_txt(int i){
-		
+	void return_txt(int i){ //recebe a id
+		int j=i;
+		string a="V_so_textos("; //i tá na posição 13
+		j=int((j-1)/10000);
+		cout<<endl;
+		a+=to_string(j);
+		a+=").txt";
+		ifstream dados;
+		dados.open(a);
+		for(int k;k<(i-j*10000);k++){
+			getline(dados,a);
 	}
+	cout<<a;	
+	} 
 		
 	void titulos_comuns(vector<int> & vec1, vector<int> vec2){
 			if(vec1.empty()){
@@ -279,7 +306,7 @@ int main(){
 	string titulos[4];
 	busca b;
 	ifstream dados;
-	dados.open("vai_dar_certo.txt");
+	dados.open("V_ids_titulos_e_textos.txt");
 	for(int i=0;i<4;i++){
 		string id;
 		getline(dados,id);
@@ -297,9 +324,13 @@ int main(){
 			b.inserir(word,i);
 		}
 	}
-	b.sugerir("bomba");
+	//b.sugerir("bomba");
+	//b.return_txt(0);
+//	b.return_txt(1);
+//	b.return_txt(2);
+//	b.return_txt(3);
 	b.searchy();
 	delete[] pNode;
-	return 3221225477;
+	return 3;
 }
 
