@@ -15,7 +15,7 @@ sao
 amigos
 1
 buceta
-2 3
+2 3 4
 barriga
 2
 barricada
@@ -49,3 +49,4 @@ strangular
 davila
 4
 16jul1999
+4
