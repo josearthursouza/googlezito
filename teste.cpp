@@ -245,7 +245,16 @@ class busca{
 					vector<Node*> vec;
 					int j=0;
 					printa_resto(pNode,word,vec,j);
-					cout<<endl<<endl;
+					auto end = std::chrono::steady_clock::now();
+					cout<<"quieres usar alguma das sugestoes?(s/n)";
+					getline(cin, word);
+					if(word=="s"){
+						cout<<"qual?";
+						getline(cin, word);
+						pNode=vec.at(stoi(word));
+					}
+					std::chrono::duration<double> suj=end-start;
+					cout<<"a sugestão levou "<<suj.count()*1000000<<" microsegundos"<<endl;
 					return;
 				}
 			}
@@ -278,38 +287,41 @@ class busca{
 							vector<Node*> vecN;
 							int j=0;
 							printa_resto(pNodeee,print,vecN,j);
-							cout<<"quieres usar alguma das sugestoes?(s/n)";
+							auto end = std::chrono::steady_clock::now();
+							cout<<"quieres usar alguma das sugestoes?(s/n)"<<endl;
 							getline(cin, word);
 							if(word=="s"){
 								cout<<"qual?";
 								getline(cin, word);
 								pNodee=vecN.at(stoi(word));
 								
-							}
-							auto end = std::chrono::steady_clock::now();	
+							}	
 							std::chrono::duration<double> suj=end-start;
 							cout<<"a sugestão levou "<<suj.count()*1000000<<" microsegundos"<<endl;
 							return;
 						}
 						j++;
 					}
+					cout<<"EH BOMBA";
+					return;
 				}
 			}
 		}
 		
-		void printa_resto(Node* pNode, string print,vector<Node*> & vec,int k){
+		void printa_resto(Node* pNode, string print,vector<Node*> & vec,int & k){
+			if(k>=5) return;
 			print[print.length()-1]=pNode->data;
 			print+=' ';
 			if(pNode->fim!=1){
 				for(int i=0;i<36;i++){
 					if( pNode->pchild[i] != nullptr ){
 						Node* pNodeee=pNode->pchild[i];
-						printa_resto(pNodeee, print,vec,k);	
-						k++;	
+						printa_resto(pNodeee, print,vec,k);
 					}
 				}
 			}
 			else{
+				k++;
 				vec.push_back(pNode);
 				cout<<"["<<k<<"]- "<< print<<endl;
 				return;
@@ -356,13 +368,8 @@ int main(){
 		getline(dados,ids);
 		b.inserir(palavra,ids);
 	}
-	
-	//for(int i=0;i<4;i++){
-	//	cout<<i<<"-"<<titulos[i]<<endl;
-	//}
 	b.searchy();
-	//cout<<*titulos;
 	delete[] pNode;
-	return 3;
+	return 3221225477;
 }
 
