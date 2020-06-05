@@ -1,0 +1,16 @@
+INSTRUÇÕES
+
+Vá na pasta raw
+Exclua os arquivos vazios 
+    Como? Ordene pelo tamanho (ali em cima, que tem Nome | Data de     modificação ... | Tamanho). Vão sobrar 154 arquivos.
+Renomeie os arquivos para "amigavel (i)".
+    Selecione todos os arquivos juntos, clique como botão direito e     "renomear". Digite:    amigavel    , o esperado é que os arquivos fiquem     com o nome "amigavel (i)" de 1 a 154.
+
+Copie e cole os 4 arquivos .py da pasta limpeza na pasta raw. 
+Execute a primeira parte (é só dar play na setinha verde do spyder).
+    Vão surgir 137 arquivos "conteudos_desordem (i)" e um arquivo     "titulos_desordem". Nesse ponto, pode excluir os arquivos "amigavel". 
+     (mas só se não tiver medo de ter que baixar tudo de novo depois).
+Execute a segunda parte.
+    Vão surgir 137 arquivos "conteudos_ordem (i)" e um arquivo     "titulos_ordem". Nesse ponto, pode excluir os arquivos com "desordem".
+Execute as terceiras partes rs
+    Pode apagar nada não. Vão surgir 50 "palavras_ids_A (i)" e 50     "palavras_ids_B (i)".    
