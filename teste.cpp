@@ -131,7 +131,7 @@ class busca{
 				if(palavras=="s"){
 					diff-=diff;
 					string palavras;
-					cout << "Digite uma palavra: ";
+					cout << "Digite sua pesquisa: ";
 					getline(cin, palavras);
 					stringstream split;
 					split << palavras;
@@ -243,13 +243,13 @@ class busca{
 				else{//EXISTENTE, NÃO COMPLETA
 					cout <<"Hmmm...parece que voce nao digitou a palavra completa. Voce pode tentar:"<<endl;
 					vector<Node*> vec;
-					int j=0;
+					int j=-1;
 					printa_resto(pNode,word,vec,j);
 					auto end = std::chrono::steady_clock::now();
-					cout<<"quieres usar alguma das sugestoes?(s/n)";
+					cout<<"quieres usar alguma das sugestoes?(s/n)"<<endl;
 					getline(cin, word);
 					if(word=="s"){
-						cout<<"qual?";
+						cout<<"qual?"<<endl;
 						getline(cin, word);
 						pNode=vec.at(stoi(word));
 					}
@@ -285,13 +285,13 @@ class busca{
 						if( pNode->pchild[j] != nullptr ){
 							Node* pNodeee=pNode;
 							vector<Node*> vecN;
-							int j=0;
-							printa_resto(pNodeee,print,vecN,j);
+							int l=-1;
+							printa_resto(pNodeee,print,vecN,l);
 							auto end = std::chrono::steady_clock::now();
 							cout<<"quieres usar alguma das sugestoes?(s/n)"<<endl;
 							getline(cin, word);
 							if(word=="s"){
-								cout<<"qual?";
+								cout<<"qual?"<<endl;
 								getline(cin, word);
 								pNodee=vecN.at(stoi(word));
 								
@@ -302,14 +302,14 @@ class busca{
 						}
 						j++;
 					}
-					cout<<"EH BOMBA";
+					cout<<"EH BOMBA"<<endl;
 					return;
 				}
 			}
 		}
 		
 		void printa_resto(Node* pNode, string print,vector<Node*> & vec,int & k){
-			if(k>=5) return;
+			if(k>=4) return;
 			print[print.length()-1]=pNode->data;
 			print+=' ';
 			if(pNode->fim!=1){
