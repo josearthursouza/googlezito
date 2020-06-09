@@ -40,7 +40,7 @@ class steady_clock;
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[4];
+		string titulos[4]; //coloca o numero de titulos aqui tbm
 		
 	public:
 		
@@ -153,7 +153,7 @@ class busca{
 						getline(cin,palavras);
 						if(palavras=="s"){
 							for(int i=0;i<min(int(vec1.size()),j);i++){
-								cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
+								cout<<"["<<i+20<<"]- "<<titulos[vec1.at(i+20) -1] <<endl;
 							}
 							j+=20;
 						}
@@ -361,7 +361,7 @@ int main(){
 		b.inserir_titulo(titulo, i);
 		titulos[i]=titulo;
 	}
-	for(int i=0;i<26;i++){ //número de palavras
+	for(int i=0;i<29;i++){ //número de palavras
 		string palavra;
 		getline(dados,palavra);
 		string ids;
