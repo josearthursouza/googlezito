@@ -332,18 +332,56 @@ class busca{
 			ofstream file;
 			file.open(file_name);
 			Node * pNode = pRoot;
-        	segunda_serializacao(pNode, file);
+			for(int i =0; i<36; i++){
+        	segunda_serializacao(pNode->pchild[i], file);
+        	}
 		}
 	
 		void segunda_serializacao(Node * pCur, ofstream & file){
+			if (pCur == nullptr){ return;
+			}
         	file << pCur->data << ".";
+        	if(pCur->vec.size() != 0){
+        		file<< pCur->vec.size() << "+";
+        		for (auto i = pCur->vec.begin(); i != pCur->vec.end(); ++i) {
+       				 file << *i << ",";
+       			}
+			}
         	for(int i=0;i<36;i++){
             	segunda_serializacao(pCur->pchild[i], file);
         	}
         
         file << "-"; 
     }
+    /*
+    	void desserializacao(string file_name){
+    		ifstream file;
+    		string line;
+    		file.open(file_name);
+    		get_line(file,line);
+    		Node ** pNode = &pRoot;
+    		stringstream split;
+    		split << line;
+    		desserializacao_pRoot(pNode, split);
+		}
+		void desserializacao_pRoot(Node ** pNode, stringstream & split){
+			string cur_name;
+			while(split >> cur_name){
+				if(desserializacao_resto(pNode, cur_name, split)) break;
+			}
+		}
 		
+		bool desserializacao_resto(Node ** pNode, string cur_name, stringstream  & split){
+			if(cur_name=="-") return 1;
+			Node *pNew = new Node(cur_name);
+			(*pNode)->child[cur_name] = pNew; 
+			pNode = &(*pNode)->child[cur_name];
+			 while(split >> cur_name){
+            if(run_diserialize(pNode, cur_name, split)) break;
+        }
+        return 0;
+    }
+		*/
 	};
 
 int main(){
@@ -368,6 +406,7 @@ int main(){
 		getline(dados,ids);
 		b.inserir(palavra,ids);
 	}
+	b.serializacao("seg_serializacao.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
