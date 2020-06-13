@@ -40,7 +40,7 @@ class steady_clock;
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[4]; //coloca o numero de titulos aqui tbm
+		string titulos[100000]; //coloca o numero de titulos aqui tbm
 		
 	public:
 		
@@ -143,19 +143,24 @@ class busca{
 					}
 					cout << "a pesquisa foi feita em "
 					<<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl
-					<<"e ha correspondencia da pesquisa nos seguintes titulos:"<<endl;
+					<<"e ha correspondencia da pesquisa nos seguintes " << vec1.size() << " titulos:"<<endl;
 					int j=20;
+					int printados = 0;
 					for(int i=0;i<min(int(vec1.size()),j);i++){
 						cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
+						printados++;
 					}
 					while(int(vec1.size())>j){
-						cout<<"Há mais titulos. Deseja ve-los?";
+						cout << printados << "printados" << endl;
+						cout<<"Há mais titulos. Deseja ve-los? (s/n)" << endl;
 						getline(cin,palavras);
+						j+=20;
 						if(palavras=="s"){
-							for(int i=0;i<min(int(vec1.size()),j);i++){
-								cout<<"["<<i+20<<"]- "<<titulos[vec1.at(i+20) -1] <<endl;
+							for(int i=printados;i<min(int(vec1.size()),j);i++){
+								cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
+								printados++;
 							}
-							j+=20;
+							
 						}
 						else{
 							break;
@@ -387,13 +392,13 @@ class busca{
 int main(){
 	Node* pNode;
 	int ies;
-	string titulos[4];
+	string titulos[100000];
 	busca b;
 	ifstream dados;
 	ifstream dades;
-	dados.open("V_palavras_e_ids.txt");
-	dades.open("V_titulos.txt");
-	for(int i=0;i<4;i++){ //numero de titulos
+	dados.open("2palavras99999ids.txt");
+	dades.open("titulos_ordem.txt");
+	for(int i=0;i<100000;i++){ //numero de titulos
 		string titulo;
 		getline(dades,titulo);
 		b.inserir_titulo(titulo, i);
@@ -406,7 +411,7 @@ int main(){
 		getline(dados,ids);
 		b.inserir(palavra,ids);
 	}
-	b.serializacao("seg_serializacao.txt");
+//	b.serializacao("seg_serializacao.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
