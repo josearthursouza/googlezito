@@ -33,6 +33,12 @@ for indice_conteudos in range(70,137):
                     dicionario[palavra] = [10000*indice_conteudos+indice_linha+1]
             listaboa.append(palavra)
     arquivo.close()
+    
+try:
+    dicionario.pop("")
+except:
+    pass
+
 
 
 
