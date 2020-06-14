@@ -40,7 +40,6 @@ class steady_clock;
 class busca{
 	private:
 		Node *pRoot;
-		string titulos[100000]; //coloca o numero de titulos aqui tbm
 		
 	public:
 		
@@ -88,9 +87,6 @@ class busca{
 			}	
 		} 
 		
-		void inserir_titulo(string titulo, int id){
-			titulos[id]=titulo;
-		}
 		
 		void inserir_idd(vector<int> & vec, string ids, int & len_id){
 			stringstream split;
@@ -144,28 +140,42 @@ class busca{
 					cout << "a pesquisa foi feita em "
 					<<diff.count() <<" segundos ou "<<diff.count()*10000000 <<" microsegundos"<<endl
 					<<"e ha correspondencia da pesquisa nos seguintes " << vec1.size() << " titulos:"<<endl;
+					
 					int j=20;
 					int printados = 0;
-					for(int i=0;i<min(int(vec1.size()),j);i++){
-						cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
-						printados++;
-					}
+					ifstream Titulos;
+					Titulos.open("titulos_ordem.txt");
+					int i = 1;
+					while(printados < min(j,int(vec1.size())-1)){
+						string Titulo;
+						getline(Titulos, Titulo);
+						if(i == vec1[printados]){
+							cout<<"["<<printados<<"]- "<<Titulo <<endl;
+							printados++;
+						}
+						i++;
+					}					 
 					while(int(vec1.size())>j){
-						cout << printados << "printados" << endl;
 						cout<<"H· mais titulos. Deseja ve-los? (s/n)" << endl;
 						getline(cin,palavras);
 						j+=20;
-						if(palavras=="s"){
-							for(int i=printados;i<min(int(vec1.size()),j);i++){
-								cout<<"["<<i<<"]- "<<titulos[vec1.at(i) -1] <<endl;
-								printados++;
+						if(palavras=="s"){ 
+							while(printados < min(j,int(vec1.size())-1)){
+								string Titulo;
+								getline(Titulos, Titulo);
+								if(i == vec1[printados]){
+									cout<<"["<<printados<<"]- "<<Titulo <<endl;
+									printados++;
+								}
+								i++;
 							}
-							
 						}
 						else{
 							break;
 						}
 					}
+					Titulos.close();
+					
 					while(true){
 						cout<<"quer abrir algum titulo? (s/n)"<<endl;
 						getline(cin,palavras);
@@ -178,7 +188,8 @@ class busca{
 						else{
 							break;
 						}
-					}	
+					}
+						
 				}
 				else{
 					cout<< "obrigado e volte sempre!";
@@ -246,7 +257,7 @@ class busca{
   				if(pNode->fim==1){//EXISTENTE E COMPLETA
 				}
 				else{//EXISTENTE, N√ÉO COMPLETA
-					cout <<"Hmmm...parece que voce nao digitou a palavra completa. Voce pode tentar:"<<endl;
+					cout <<"Hmmm...parece que voce nao digitou a palavra " << word << " completa. Voce pode tentar:"<<endl;
 					vector<Node*> vec;
 					int j=-1;
 					printa_resto(pNode,word,vec,j);
@@ -392,18 +403,18 @@ class busca{
 int main(){
 	Node* pNode;
 	int ies;
-	string titulos[100000];
+//	string titulos[100000];
 	busca b;
 	ifstream dados;
-	ifstream dades;
+//	ifstream dades;
 	dados.open("2palavras99999ids.txt");
-	dades.open("titulos_ordem.txt");
-	for(int i=0;i<100000;i++){ //numero de titulos
-		string titulo;
-		getline(dades,titulo);
-		b.inserir_titulo(titulo, i);
-		titulos[i]=titulo;
-	}
+//	dades.open("titulos_ordem.txt");
+//	for(int i=0;i<100000;i++){ //numero de titulos
+//		string titulo;
+//	/	getline(dades,titulo);
+//		b.inserir_titulo(titulo, i);
+//		titulos[i]=titulo;
+//	}
 	for(int i=0;i<29;i++){ //n˙mero de palavras
 		string palavra;
 		getline(dados,palavra);
@@ -411,6 +422,7 @@ int main(){
 		getline(dados,ids);
 		b.inserir(palavra,ids);
 	}
+	dados.close();
 //	b.serializacao("seg_serializacao.txt");
 	b.searchy();
 	delete[] pNode;
