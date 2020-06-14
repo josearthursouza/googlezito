@@ -427,17 +427,15 @@ int main(){
 	dados.open("palavras_ids_B (39)");
 	string palavra;
 	string ids;
-	for(int i=0;i<2;i++){ //número de palavras
-		string palavra;
-		getline(dados,palavra);
-		string ids;
+	while(getline(dados,palavra)){
 		getline(dados,ids);
 		b.inserir(palavra,ids);
 	}
 	dados.close();
-	b.serializacao("sex_serializacao.txt");
-	
-//	b.desserializacao("sex_serializacao.txt");
+	b.serializacao("cocinha.txt");
+
+
+//	b.desserializacao("cocinha.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
