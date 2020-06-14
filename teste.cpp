@@ -146,7 +146,7 @@ class busca{
 					ifstream Titulos;
 					Titulos.open("titulos_ordem.txt");
 					int i = 1;
-					while(printados < min(j,int(vec1.size())-1)){
+					while(printados < min(j,int(vec1.size()))){
 						string Titulo;
 						getline(Titulos, Titulo);
 						if(i == vec1[printados]){
@@ -160,7 +160,7 @@ class busca{
 						getline(cin,palavras);
 						j+=20;
 						if(palavras=="s"){ 
-							while(printados < min(j,int(vec1.size())-1)){
+							while(printados < min(j,int(vec1.size()))){
 								string Titulo;
 								getline(Titulos, Titulo);
 								if(i == vec1[printados]){
@@ -420,20 +420,14 @@ class busca{
 int main(){
 	Node* pNode;
 	int ies;
-//	string titulos[100000];
+
 	busca b;
-	//ifstream dados;
-//	ifstream dades;
-//	dados.open("2palavras99999ids.txt");
-//	dades.open("titulos_ordem.txt");
-//	for(int i=0;i<100000;i++){ //numero de titulos
-//		string titulo;
-//	/	getline(dades,titulo);
-//		b.inserir_titulo(titulo, i);
-//		titulos[i]=titulo;
-//	}
-/*
-	for(int i=0;i<29;i++){ //número de palavras
+	ifstream dados;
+
+	dados.open("palavras_ids_B (39)");
+	string palavra;
+	string ids;
+	for(int i=0;i<2;i++){ //número de palavras
 		string palavra;
 		getline(dados,palavra);
 		string ids;
@@ -442,8 +436,8 @@ int main(){
 	}
 	dados.close();
 	b.serializacao("sex_serializacao.txt");
-	*/
-	b.desserializacao("sex_serializacao.txt");
+	
+//	b.desserializacao("sex_serializacao.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
