@@ -199,19 +199,20 @@ class busca{
 		}
 		
 		void return_txt(int i){ //recebe a id
-			int j=i;
-			string a="V_so_textos("; //i tá na posição 13
-			j=int((j-1)/10000);
+			int j;
+			string a="conteudos_ordem ("; //i tá na posição 13
+			j=i/10000 +1;
 			cout<<endl;
 			a+=to_string(j);
-			a+=").txt";
+			a+=")";
 			ifstream dados;
 			dados.open(a);
-			for(int k;k<(i-j*10000);k++){
-			getline(dados,a);
-	}
-	cout<<a;	
-	} 
+			for(int k;k<(i-(j-1)*10000);k++){
+				getline(dados,a);
+			}
+			cout<<a;	
+			dados.close();
+		} 	
 		
 		void titulos_comuns(vector<int> & vec1, vector<int> vec2){
 			if(vec1.empty()){
@@ -400,6 +401,7 @@ class busca{
         (*pNode)->fim = stoi(end);
         if(end == "1"){
         	split >> tamanho;
+        	cout << tamanho << " ";
         	(*pNode)->len_id = stoi(tamanho);
         	for(int i=0; i<(*pNode)->len_id; i++){
         		string ide;
@@ -424,7 +426,7 @@ int main(){
 	busca b;
 	ifstream dados;
 
-	dados.open("palavras_ids_B (39)");
+	dados.open("palavras_ids_A (1)");
 	string palavra;
 	string ids;
 	while(getline(dados,palavra)){
@@ -432,7 +434,7 @@ int main(){
 		b.inserir(palavra,ids);
 	}
 	dados.close();
-	b.serializacao("cocinha.txt");
+//	b.serializacao("cocinha.txt");
 
 
 //	b.desserializacao("cocinha.txt");
