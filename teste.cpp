@@ -358,18 +358,21 @@ class busca{
 		void segunda_serializacao(Node * pCur, ofstream & file){
 			if (pCur == nullptr){ return;
 			}
-        	file << pCur->data << " " << pCur ->fim << " ";
+        	file << pCur->data << " ";
         	if(pCur->vec.size() != 0){
-        		file<< pCur->vec.size() << " ";
+        		file<< "1 "<< pCur->vec.size() << " ";
         		for (auto i = pCur->vec.begin(); i != pCur->vec.end(); ++i) {
        				 file << *i << " ";
        			}
+			}
+			else{
+				file << "0 ";
 			}
         	for(int i=0;i<36;i++){
             	segunda_serializacao(pCur->pchild[i], file);
         	}
         
-        file << "- "; 
+        file << "- ";
     }
     
     	void desserializacao(string file_name){
@@ -401,7 +404,6 @@ class busca{
         (*pNode)->fim = stoi(end);
         if(end == "1"){
         	split >> tamanho;
-        	cout << tamanho << " ";
         	(*pNode)->len_id = stoi(tamanho);
         	for(int i=0; i<(*pNode)->len_id; i++){
         		string ide;
@@ -424,9 +426,9 @@ int main(){
 	int ies;
 
 	busca b;
-	ifstream dados;
+/*	ifstream dados;
 
-	dados.open("palavras_ids_A (1)");
+	dados.open("2palavras99999ids");
 	string palavra;
 	string ids;
 	while(getline(dados,palavra)){
@@ -434,10 +436,10 @@ int main(){
 		b.inserir(palavra,ids);
 	}
 	dados.close();
-//	b.serializacao("cocinha.txt");
+	b.serializacao("tentativa8.txt");
+*/
 
-
-//	b.desserializacao("cocinha.txt");
+	b.desserializacao("tentativa8.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
