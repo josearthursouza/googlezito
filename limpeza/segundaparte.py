@@ -33,7 +33,7 @@ for i in range(len(titulos)):
     titulos_id.append(par)
     
 t_ordenados = merge_sort(titulos_id)
-"""
+
 lista_de_textos = [None for i in range(137)]
 for i in range(137):
     nome = "conteudos_desordem (" + str(i+1) + ")"
@@ -69,4 +69,3 @@ for i in range(len(t_ordenados)):
 re_titulos.close()
 re_current.close()
 
-"""
