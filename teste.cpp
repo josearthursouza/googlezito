@@ -1,3 +1,4 @@
+#include <locale.h>
 #include <chrono>
 #include <algorithm>    
 using std::min;
@@ -121,7 +122,7 @@ class busca{
 			
 			while(true){
 				vec1={};
-				cout<<"?quieres hacer una pesquisa? (s/n)" <<endl;
+				cout<<"¿Quieres hacer una pesquisa? (s/n)" <<endl;
 				getline(cin,palavras);
 				if(palavras=="s"){
 					std::chrono::duration<double> comp;
@@ -129,7 +130,7 @@ class busca{
 					bool vazio=0;
 					bool sugs;//se a resposta a sugest'ao for sim (isso vai mudar s[o quando for n)
 					string palavras;
-					cout << "Digite sua pesquisa: ";
+					cout << "Digite su pesquisa: ";
 					getline(cin, palavras);
 					stringstream split;
 					split << palavras;
@@ -142,11 +143,11 @@ class busca{
 							titulos_comuns(vec1,pNode->vec,vazio,comp);
 						}
 					}
-					cout << "a pesquisa foi feita em "
-					<<diff.count() <<" segundos ou "<<diff.count()*1000000 <<" microsegundos"<<endl
-					<< "a comparaÃ§Ã£o de tÃ­tulos foi feita em " <<comp.count()*1000000 <<" microsegundos" <<endl;
+					cout << "La pesquisa fue hecha en "
+					<<diff.count() <<" segundos o "<<diff.count()*1000000 <<" microsegundos"<<endl
+					<< "La comparación de títulos fue hecha en " <<comp.count()*1000000 <<" microsegundos" <<endl;
 					if(vec1.size()!=0){
-					cout<<"e ha correspondencia da pesquisa nos seguintes " << vec1.size() << " titulos:"<<endl;
+					cout<<"y hay correspondencia de la pesquisa en los seguientes " << vec1.size() << " títulos:"<<endl;
 					
 					int j=20;
 					int printados = 0;
@@ -163,7 +164,7 @@ class busca{
 						i++;
 					}					 
 					while(int(vec1.size())>j){
-						cout<<"HÃ¡ mais titulos. Deseja ve-los? (s/n)" << endl;
+						cout<<"Hay más títulos. ¿Desea verlos? (s/n)" << endl;
 						getline(cin,palavras);
 						j+=20;
 						if(palavras=="s"){ 
@@ -184,10 +185,10 @@ class busca{
 					Titulos.close();
 					
 					while(true){
-						cout<<"quer abrir algum titulo? (s/n)"<<endl;
+						cout<<"¿Quieres abrir algún título? (s/n)"<<endl;
 						getline(cin,palavras);
 						if(palavras=="s"){
-							cout<<"qual?"<<endl;
+							cout<<"¿Cuál?"<<endl;
 							getline(cin,palavras);
 							return_txt(vec1.at(stoi(palavras)) );
 							cout<<endl;
@@ -198,12 +199,12 @@ class busca{
 					}
 				}
 				else{
-					cout<<"nÃ£o hÃ¡ tÃ­tulos correspondentes a sua pesquisa :|"<<endl;
+					cout<<"No hay títulos correspondientes a su pesquisa :|"<<endl;
 				}
 						
 				}
 				else{
-					cout<< "obrigado e volte sempre!";
+					cout<< "¡Gracias y volve siempre!";
 					return;
 				}
 			}
@@ -274,15 +275,15 @@ class busca{
   				if(pNode->fim==1){//EXISTENTE E COMPLETA
 				}
 				else{//EXISTENTE, NÃƒÆ’O COMPLETA
-					cout <<"Hmmm...parece que voce nao digitou a palavra " << word << " completa. Voce pode tentar:"<<endl;
+					cout <<"Hmmm... parece que usted no digitó la palabra " << word << " completa. Usted puede tentar:"<<endl;
 					vector<Node*> vec;
 					int j=-1;
 					printa_resto(pNode,word,vec,j);
 					auto end = std::chrono::steady_clock::now();
-					cout<<"quieres usar alguma das sugestoes?(s/n)"<<endl;
+					cout<<"¿Quieres usar alguna de las sugestiones?(s/n)"<<endl;
 					getline(cin, word);
 					if(word=="s"){
-						cout<<"qual?"<<endl;
+						cout<<"Cuál?"<<endl;
 						getline(cin, word);
 						pNode=vec.at(stoi(word));
 					}
@@ -291,7 +292,7 @@ class busca{
 						sugs=0;
 					} 
 					std::chrono::duration<double> suj=end-start;
-					cout<<"a sugestÃ£o levou "<<suj.count()*1000000<<" microsegundos"<<endl;
+					cout<<"La sugestión llevó "<<suj.count()*1000000<<" microsegundos"<<endl;
 					return;
 				}
 			}
@@ -306,7 +307,7 @@ class busca{
 		
 		void sugerir(string word,Node* & pNodee, bool & sugs){
 			Node* pNode=pRoot; 
-			cout<<"Nao encontramos a palavra " <<word <<".";
+			cout<<"No encontramos la palabra " <<word <<".";
 			int i=0;
 			string print="";
 			auto start = std::chrono::steady_clock::now(); 
@@ -326,10 +327,10 @@ class busca{
 							int l=-1;
 							printa_resto(pNodeee,print,vecN,l);
 							auto end = std::chrono::steady_clock::now(); 
-							cout<<"quieres usar alguma das sugestoes?(s/n)"<<endl;
+							cout<<"¿Quieres usar alguna de las sugestiones?(s/n)"<<endl;
 							getline(cin, word);
 							if(word=="s"){
-								cout<<"qual?"<<endl;
+								cout<<"¿Cuál?"<<endl;
 								getline(cin, word);
 								pNodee=vecN.at(stoi(word));
 								
@@ -338,12 +339,12 @@ class busca{
 								sugs=0;
 							}
 							std::chrono::duration<double> suj=end-start;
-							cout<<"a sugestÃ£o levou "<<suj.count()*1000000<<" microsegundos"<<endl;
+							cout<<"La sugestión llevó "<<suj.count()*1000000<<" microsegundos"<<endl;
 							return;
 						}
 						j++;
 					}
-					cout<<endl<<"Talvez voce tenha digitado coisa a mais. Estamos retornando os resultados da palavra " <<print <<endl;
+					cout<<endl<<"Talvez usted ha digitado cosa a más. Estamos returnando los resultados de la palabra " <<print <<endl;
 					return;
 				}
 			}
@@ -446,6 +447,7 @@ class busca{
 	};
 
 int main(){
+	setlocale(LC_ALL,"");
 	Node* pNode;
 	int ies;
 
@@ -463,7 +465,7 @@ int main(){
 	b.serializacao("tentativa8.txt");
 */
 
-	b.desserializacao("tentativa8.txt");
+	b.desserializacao("A1-50eB1.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
