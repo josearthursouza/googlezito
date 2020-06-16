@@ -13,4 +13,4 @@ Execute a primeira parte (é só dar play na setinha verde do spyder).
 Execute a segunda parte.
     Vão surgir 137 arquivos "conteudos_ordem (i)" e um arquivo     "titulos_ordem". Nesse ponto, pode excluir os arquivos com "desordem".
 Execute as terceiras partes rs
-    Pode apagar nada não. Vão surgir 50 "palavras_ids_A (i)" e 50     "palavras_ids_B (i)".    
+    Pode apagar nada não. Vão surgir 50 "palavras_ids_A (i)" e 51     "palavras_ids_B (i)".    
