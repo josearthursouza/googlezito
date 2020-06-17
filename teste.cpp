@@ -146,7 +146,7 @@ class busca{
 					int j=20;
 					int printados = 0;
 					ifstream Titulos;
-					Titulos.open("titulos_ordem.txt");
+					Titulos.open("titulos_ordem");
 					int i = 1;
 					while(printados < min(j,int(vec1.size()))){
 						string Titulo;
@@ -447,19 +447,45 @@ int main(){
 
 	busca b;
 	ifstream dados;
-
-	dados.open("2palavras99999ids");
+	
 	string palavra;
 	string ids;
-	while(getline(dados,palavra)){
-		getline(dados,ids);
-		b.inserir(palavra,ids);
+	
+	cout << "vai começar! ";
+	
+	for(int i=1, i<51, i++){
+		string nome = "palavras_ids_A (";
+		nome += to_string(i);
+		nome += ")";
+		dados.open(nome);
+		while(getline(dados,palavra)){
+			getline(dados,ids);
+			b.inserir(palavra,ids);
+		}
+		dados.close();
 	}
-	dados.close();
-//	b.serializacao("tentativa8.txt");
+	
+	cout << "inseriu parte A! ";
+	
+	for(int i=1, i<52, i++){
+		string nome = "palavras_ids_B (";
+		nome += to_string(i);
+		nome += ")";
+		dados.open(nome);
+		while(getline(dados,palavra)){
+			getline(dados,ids);
+			b.inserir(palavra,ids);
+		}
+		dados.close();
+	}	
+	
+	cout << "inseriu parte B! ";
+	
+	
+	b.serializacao("GrandiosaArvore");
 
+	cout << "serializou!" << endl;
 
-//	b.desserializacao("A1-50eB1.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
