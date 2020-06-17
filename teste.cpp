@@ -338,8 +338,15 @@ class busca{
 						}
 						j++;
 					}
-					cout<<endl<<"Talvez usted ha digitado cosa a más. Estamos returnando los resultados de la palabra " <<print <<endl;
-					return;
+					cout<<endl<<"Talvez usted ha digitado cosa a más. Podemos returnar los resultados de la palabra " <<print <<endl <<"¿Lo quieres?"<<endl;
+					getline(cin, word);
+					if(word=="s"){
+						return;	
+					}
+					else{
+						sugs=0;
+						return;
+					}
 				}
 			}
 		}
@@ -363,7 +370,6 @@ class busca{
 				return;
 			}
 		}
-		
 		
 		void serializacao(string file_name){
 			ofstream file;
@@ -404,6 +410,7 @@ class busca{
     		split << line;
     		desserializacao_pRoot(pNode, split);
 		}
+		
 		void desserializacao_pRoot(Node ** pNode, stringstream & split){
 			string cur_name_s;
 			while(split >> cur_name_s){
@@ -453,7 +460,7 @@ int main(){
 	
 	cout << "vai começar! ";
 	
-	for(int i=1, i<51, i++){
+	for(int i=1; i<51; i++){
 		string nome = "palavras_ids_A (";
 		nome += to_string(i);
 		nome += ")";
@@ -467,7 +474,7 @@ int main(){
 	
 	cout << "inseriu parte A! ";
 	
-	for(int i=1, i<52, i++){
+	for(int i=1; i<52; i++){
 		string nome = "palavras_ids_B (";
 		nome += to_string(i);
 		nome += ")";
