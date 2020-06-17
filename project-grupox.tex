@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage{listings}
+
+\title{Googlezito}
+\author{Carolina Monteiro, José Arthur Souza e Laura Chaves }
+\date{June 2020}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    
+    Nosso grupo montou uma ferramenta de busca no corpus da Wikipédia em inglês. Para isso, montamos uma árvore de prefixos, a trie, na linguagem C++, fizemos a limpeza dos dados do corpus em Python, e a busca em si em C++ também. Também foi implementada a serialização e desserialização da árvore, assim como um mecanismo de sugestão de palavras caso a busca não encontre sucesso. Chamamos nossa ferramenta de Googlezito.
+    
+\end{abstract}
+
+\section{Referências}
+
+O GitHub do repositório onde o grupo pode desenvolver a ferramenta de busca pode ser acessado pelo link \url{https://github.com/josearthursouza/googlezito}
+
+Os pacotes do C++ que são utilizados são:
+
+\begin{itemize}
+    \item locale.h
+    \item chrono
+    \item algorithm
+    \item iostream
+    \item fstream
+    \item sstream
+    \item string
+    \item vector
+\end{itemize}
+
+Além disso, deve ser incluído no início do código as seguintes linhas:
+
+\begin{lstlisting}[language=C++]
+using std::min;
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+using std::getline;
+using std::to_string;
+using namespace std;;
+
+\end{lstlisting}
+
+\section{Descrição}
+
+Começamos o trabalho baixando o corpus da Wikipédia, pelo link fornecido pelo professor (\url{http://www.cs.upc.edu/~nlp/wikicorpus/}). A partir daí, começamos a pensar em que tipo de estrutura usaríamos, e de que forma começaríamos o pré processamento dos arquivos, dado que seria completamente inviável não fazer uma limpeza de qualquer tipo.
+
+Inicialmente, pensamos em trabalhar com a estrutura map do C++, que funcionaria como uma espécie de dicionário, mas o grupo acabou por decidir fazer a árvore de prefixos (trie), pois cremos ser o melhor método, levando em conta o menor tempo de criação e implementação que esta estrutura propõe.
+
+Nessa árvore, inserimos palavras da seguinte forma: começamos num nó raiz, que não possui valor, mas que está associado a um vetor de 36 elementos. Cada um desses elementos é um ponteiro para um possível filho (as 26 letras do alfabeto latino e os 10 algarismos indo-arábicos que utilizamos). A inserção de palavras se dá caracter por caracter. A cada caracter que inserimos, cria-se um novo nó, filho do caracter anterior na palavra, e isso é definido ao colocar um ponteiro a esse novo nó na posição correspondente do vetor de ponteiros do nó pai. Assim, cada letra de cada palavra é um nó, com um vetor de ponteiros associados aos seus possíveis filhos. Além disso, cada nó possui um indicativo de se há a palavra indicada nos arquivos do Corpus, ou seja, se a palavra existe nos textos da Wikipédia. No caso positivo, também é associado ao nó um vetor com os índices de cada artigo do corpus no qual a palavra aparece. Assim, a busca ocorre por, começando no nó raiz, analisando cada caracter e descendo os níveis até atingir o fim da palavra, e daí verificando se a palavra existe na árovre e se existe no corpus da Wikipédia.
+
+Dada a árvore construída, também implementamos uma serialização em texto, para que não seja necessária fazer a construção da trie a cada vez que o programa rode, pois seria um processo muito lento. Essa serialização se deu por, considerando a estrutura montada, passar por cada nó e traduzindo para o documento de texto as informações que ele possui. No nosso caso, primeiro escreve o dado do nó, o caracter a que ele corresponde. Ao lado, escreve-se o seu booleano "fim", que é um indicativo de se é um fim de palavra ou não. Caso seja, o tamanho do vetor de índices de textos associados, ou seja, a quantidade de artigos no qual aparece, também é posta no documento, seguida dos índices em si. Para indicar que findou-se a listagem de índice, escrevemos um "-", que será importante na desserialização.
+
+A desserialização ocorre num processo quase perfeitamente inverso à serialização. Lê-se o documento de texto, e suas informações são traduzidas à arvore sabendo que começamos sempre com o dado do nó, criamos um nó com o valor; depois será indicado se é fim de palavra ou não, associamos o booleano ao nó; caso seja fim de palavra, criamos o vetor de índices associado; e por fim, vemos cada filho que ele possa ter.
+
+Ao executar o código, a primeira ação é desserializar, logo depois, o usuário pode fazer sua pesquisa. O que usuário digitar é diretamente buscado na árvore, pelo processo descrito nos parágrafos anteriores. Caso seja encontrada correspondência, mostramos ao usuário o tempo que levou para fazer a busca em segundos e microssegundos, em quantos títulos a palavra foi encontrada e os resultados em que foi encontrado, em ordem alfabética. Caso haja mais de 20 títulos associados, a exibição dos resultados será feita de 20 em 20 títulos. Na situação de a palavra buscada não existir, o programa oferece algumas sugestões, que podem ser palavras semelhantes ou sugestões de palavras que incluam a que o usuário pesquisou. O tempo de pesquisa é linear, variando com o tamanho da palavra pesquisada.
+
+\section{Resultados}
+
+\section{Limitações}
+
+Por complicações envolvendo tempo e as condições mundiais nas quais nos encontramos, não conseguimos implementar tudo que tínhamos imaginado no começo do semestre. 
+
+Não conseguimos fazer uma interface web para nossa busca, um dos pontos principais que deixamos de incluir. Sentimos falta pois é uma forma de aproximar o Googlezito do usuário, já que seria como acessar uma página na internet como inúmeras outras, ação ao qual o consumidor já está acostumado. Sabemos que executar programas direto pelo computador é menos tactível, porém compensamos a falta da interface com uma pesquisa extremamente rápida e eficiente.
+
+Outra limitação do nosso trabalho é a busca de mais de uma palavra ao mesmo tempo. O algoritmo implementado, apesar de correto, pode ser bastante lento no caso de busca por duas palavras com muitas ocorrências cada. 
+
+
+
+\section{Trabalhos futuros}
+
+\section{Conclusão}
+
+\section{Distribuição do trabalho}
+
+\begin{itemize}
+    \item Carolina Monteiro: Foi a responsável pela limpeza de dados
+    \item José Arthur Souza: Foi o responsável pela elaboração da estrutura e da sugestão de palavras
+    \item Laura Chaves: Responsável pela serialização e desserialização, utilização do unicode para leitura dos arquivos, elaboração deste relatório e também a única que conseguiu rodar arquivos tão pesados no computador pessoal.
+\end{itemize}
+
+
+\end{document}
