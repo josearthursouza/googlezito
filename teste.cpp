@@ -19,19 +19,19 @@ struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
     Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
-	Node* pchild[36]; //lista de chars possiveis a seguir
-	vector<int> vec;
-	int len_id;
+	Node* pchild[36]; //lista de chars possiveis a seguir (a-z, 0-9)
+	vector<int> vec; //vetor de ids dos títulos correspondentes à palavra
+	int len_id; //quantidade de ids associadas
 
     Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<36;i++){
-		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
+		pchild[i]=nullptr; //a principio n faremos ponteiro nenhum se não precisar
 	}
 	}
 	
 	Node(): fim(0), pP(nullptr), len_id(0) {
 	for(int i=0;i<36;i++){
-		pchild[i]=nullptr; //a principio n faremos ponteiro nenhu se n precisar
+		pchild[i]=nullptr; //a principio n faremos ponteiro nenhum se não precisar
 	}
 	}
 };
@@ -40,17 +40,11 @@ class steady_clock;
 
 class busca{
 	private:
-		Node *pRoot;
-		
+		Node *pRoot = new Node();	
 	public:
+	
 		
-	busca(){ //FUTURO CONSTRUTOR
-			pRoot=new Node();
-		}
-		
-		//~busca(){ //FUTURO DESTRUTOR
-		
-		char chaar(int i){
+		char chaar(int i){ //descobre o caracter correspondente à cada posição na array
 			if(i<=25){
 				return char(i+97);
 			}
@@ -59,7 +53,7 @@ class busca{
 			}
 		};
 		
-		int iint(char a){
+		int iint(char a){ //descobre a posição respectiva na array
 			int i=int(a);
 			if(i<69){
 				return i-48+26;
@@ -70,18 +64,18 @@ class busca{
 		}
 		
 		void inserir(string word, string ids){ //vamos inserir uma palavra
-			Node* pNode=pRoot; //node para onde devemos comeÃƒÆ’Ã‚Â§ar a inseriri letras, considerando que parte da palavra pode jÃƒÆ’Ã‚Â¡ existir
-			int ies= 0; //numero que indicarÃƒÆ’Ã‚Â¡ quantas letras da palavra jÃƒÆ’Ã‚Â¡ existem
-			if(pesquisar(word, pNode, ies)==1){ //chamamos a funÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o find, q retorna true caso a palavra jÃƒÆ’Ã‚Â¡ exista. ela tambem faz cm q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
+			Node* pNode=pRoot; //node para onde devemos começar a inserir letras, considerando que parte da palavra pode já existir
+			int ies= 0; //número que indicará quantas letras da palavra já existem
+			if(pesquisar(word, pNode, ies)==1){ //chamamos a função find, que retorna true caso a palavra já exista. ela tambem faz com q ies seja o numero em q a palavra parou e pNode aponte pro ies-simo Node
 				inserir_idd(pNode->vec, ids, pNode->len_id);
 				return;
 			}
-			else{ //caso a palavra n exista por completo
+			else{ //caso a palavra não exista por completo
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
-					Node* &newNode = pNode->pchild[iint(word[i])]; //esse ÃƒÆ’Ã‚Â© o prÃƒÆ’Ã‚Â³ximo node, a principio nullptr
+					Node* &newNode = pNode->pchild[iint(word[i])]; //esse é o próximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
 					newNode->pP=pNode; //criamos o pai dele
-					pNode=newNode; //e vamos pro prÃƒÆ’Ã‚Â³ximo node	
+					pNode=newNode; //e vamos pro próximo node	
 				}
 				inserir_idd(pNode->vec, ids, pNode->len_id);
 				pNode->fim=1;
@@ -89,6 +83,7 @@ class busca{
 		} 
 		
 		void inserir_idd(vector<int> & vec, string ids, int & len_id){
+			//pega uma string de ids separadas por " " e insere ao final do vetor de ids
 			stringstream split;
 			split << ids;
 			string id;
@@ -99,45 +94,44 @@ class busca{
 			return;
 		}
 		
-		int pesquisar(string word, Node* & pNode, int & ies){
-			pNode=pRoot; //depois do loop este ponteiro deve apontar para o ÃƒÆ’Ã‚Âºltimo node possÃƒÆ’Ã‚Â­vel.
-			ies=0; //e este deve ser o nÃƒÆ’Ã‚Âºmero de letras encontradas 
+		int pesquisar(string word, Node* & pNode, int & ies){ //essa função é para auxiliar na inserção de palavras
+			pNode=pRoot; //depois do loop este ponteiro deve apontar para o último node possível.
+			ies=0; //e este deve ser o número de letras encontradas 
 			for(int i=0; i< word.length(); i++){ 
-			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for valida em alguma palavra jÃƒÆ’Ã‚Â¡ existente, prosseguimos
-			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra prÃƒÆ’Ã‚Â³xima letra
+			 	if(  pNode->pchild[iint(word[i])] != nullptr ){ //se a letra i de word for válida em alguma palavra já existente, prosseguimos
+			 		pNode = pNode->pchild[iint(word[i])]; //fazemos o pNode ir pra próxima letra
 			 		ies++; //aumentamos o ies
 				 } 
 				else{//se n, paramos aqui
-					return 0; //retorn falso, pois a palavra n existe (pelo mens n inteira)
+					return 0; //retorna falso, pois a palavra n existe (pelo mens n inteira)
 				}
 			 }
-    		return 1; //(retorna true pra sabermos q a palabra j[a existe)
+    		return 1; //(retorna true pra sabermos q a palavra já existe)
 		}
 		
-		void searchy(){
-			std::chrono::duration<double> diff;
-			string palavras;
-			Node* pNode;
-			vector<int> vec1;
+		void searchy(){ //essa é a função pra rodar o Search Engine, fazer buscas
+			std::chrono::duration<double> diff; //tempo
+			string palavras; //vão ser as entradas 
+			Node* pNode; 
+			vector<int> vec1; //vetor de ids 
 			
 			while(true){
-				vec1={};
+				vec1={}; //esvazia o vetor a cada nova pesquisa
 				cout<<"¿Quieres hacer una pesquisa? (s/n)" <<endl;
-				getline(cin,palavras);
-				if(palavras=="s"){
-					std::chrono::duration<double> comp;
-					diff-=diff;
-					bool vazio=0;
-					bool sugs;//se a resposta a sugest'ao for sim (isso vai mudar s[o quando for n)
-					string palavras;
+				getline(cin,palavras); //aqui "palavras" é a resposta para a pergunta acima. "s" pra caso afirmativo e qualquer outra coisa caso contrário
+				if(palavras=="s"){ //se a resposta for s, começa a pesquisa
+					std::chrono::duration<double> comp; //tempo
+					diff-=diff; //tempo
+					bool vazio=0; //é pra caso a interseção dos vetores de ids seja vazia
+					bool sugs;//se a resposta a sugestão for sim (isso vai mudar só quando for n)
 					cout << "Digite su pesquisa: ";
-					getline(cin, palavras);
+					getline(cin, palavras); //agora palavras é a frase a pesquisar
 					stringstream split;
 					split << palavras;
 					string word;
 					while(split >> word){
-						sugs=1;
-						pNode=pRoot;
+						sugs=1; //só vai ser 0 se não quiser sugestão
+						pNode=pRoot; //começa a busca por uma palavra do 0, pela raiz da árvore
 						search(word,pNode,diff,sugs);	
 						if(sugs){
 							titulos_comuns(vec1,pNode->vec,vazio,comp);
@@ -283,7 +277,7 @@ class busca{
 					cout<<"¿Quieres usar alguna de las sugestiones?(s/n)"<<endl;
 					getline(cin, word);
 					if(word=="s"){
-						cout<<"Cuál?"<<endl;
+						cout<<"¿Cuál?"<<endl;
 						getline(cin, word);
 						pNode=vec.at(stoi(word));
 					}
@@ -452,7 +446,7 @@ int main(){
 	int ies;
 
 	busca b;
-/*	ifstream dados;
+	ifstream dados;
 
 	dados.open("2palavras99999ids");
 	string palavra;
@@ -462,10 +456,10 @@ int main(){
 		b.inserir(palavra,ids);
 	}
 	dados.close();
-	b.serializacao("tentativa8.txt");
-*/
+//	b.serializacao("tentativa8.txt");
 
-	b.desserializacao("A1-50eB1.txt");
+
+//	b.desserializacao("A1-50eB1.txt");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
