@@ -18,18 +18,17 @@ using namespace std;
 struct Node{
     char data; //um node tem um dado char
 	bool fim; //0:a palavra n acabou; 1:a palavra acabou
-    Node* pP; //ponteiro para o pai; ajudara na busca por palavras semelhantes
 	Node* pchild[36]; //lista de chars possiveis a seguir (a-z, 0-9)
 	vector<int> vec; //vetor de ids dos títulos correspondentes à palavra
 	int len_id; //quantidade de ids associadas
 
-    Node(char x):data(x), fim(0), pP(nullptr), len_id(0) {
+    Node(char x):data(x), fim(0), len_id(0) {
 	for(int i=0;i<36;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhum se não precisar
 	}
 	}
 	
-	Node(): fim(0), pP(nullptr), len_id(0) {
+	Node(): fim(0), len_id(0) {
 	for(int i=0;i<36;i++){
 		pchild[i]=nullptr; //a principio n faremos ponteiro nenhum se não precisar
 	}
@@ -103,7 +102,6 @@ class busca{
 				for(int i=ies; i< word.length(); i++){  //a partir da letra q ela n existe, prosseguimos da seguinte maneira:
 					Node* &newNode = pNode->pchild[iint(word[i])]; //esse é o próximo node, a principio nullptr
 					newNode = new Node(word[i]); //fazemos ele apontar pra outro node
-					newNode->pP=pNode; //criamos o pai dele
 					pNode=newNode; //e vamos pro próximo node	
 				}
 				inserir_idd(pNode->vec, ids, pNode->len_id);
@@ -403,15 +401,12 @@ class busca{
 		void segunda_serializacao(Node * pCur, ofstream & file){
 			if (pCur == nullptr){ return;
 			}
-        	file << pCur->data << " ";
-        	if(pCur->vec.size() != 0){
-        		file<< "1 "<< pCur->vec.size() << " ";
+        	file << pCur->data << " " << pCur->fim<< " ";
+        	if(pCur->fim == 1){
+        		file << pCur->vec.size() << " ";
         		for (auto i = pCur->vec.begin(); i != pCur->vec.end(); ++i) {
        				 file << *i << " ";
        			}
-			}
-			else{
-				file << "0 ";
 			}
         	for(int i=0;i<36;i++){
             	segunda_serializacao(pCur->pchild[i], file);
@@ -442,7 +437,6 @@ class busca{
         char * cur_name = new char(cur_name_s[0]);
         Node * pNew = new Node(*cur_name); 
         (*pNode)->pchild[iint(*cur_name)] = pNew;
-        pNew ->pP = (*pNode);
         pNode = &(*pNode)->pchild[iint(*cur_name)];
         string end; string tamanho;
         split >> end;
@@ -471,11 +465,12 @@ int main(){
 	Node* pNode;
 	int ies;
 
-	busca b;
+	busca b; /*
 	ifstream dados;
 	
 	string palavra;
 	string ids;
+	/*
 	
 	//b.desserializacao("A1-5eB1.txt");
 	
@@ -485,11 +480,11 @@ int main(){
 			b.inserir(palavra,ids);
 		}
 		dados.close();
-	/*
+	
 	
 	cout << "vai começar! ";
 	
-	for(int i=1, i<51, i++){
+	for(int i=1; i<51; i++){
 		string nome = "palavras_ids_A (";
 		nome += to_string(i);
 		nome += ")";
@@ -503,7 +498,7 @@ int main(){
 	
 	cout << "inseriu parte A! ";
 	
-	for(int i=1, i<52, i++){
+	for(int i=1; i<52; i++){
 		string nome = "palavras_ids_B (";
 		nome += to_string(i);
 		nome += ")";
@@ -521,7 +516,8 @@ int main(){
 	b.serializacao("GrandiosaArvore");
 
 	cout << "serializou!" << endl;
-*/
+	*/
+	b.desserializacao("GrandiosaArvore");
 	b.searchy();
 	delete[] pNode;
 	return 3221225477;
